@@ -55,17 +55,17 @@ const Dashboard = () => {
         /> */}
         <Card
           title="Total Parks"
-          value={data?.data?.data.totalParks}
+          value={data?.data?.data?.totalParks}
           icon={<TreePine />}
         />
         <Card
           title="Total Drops"
-          value={data?.data?.data.totalDrops}
+          value={data?.data?.data?.totalDrops}
           icon={<DropletIcon />}
         />
         <Card
           title="Claimed Drops"
-          value={data?.data?.data.claimedDrops}
+          value={data?.data?.data?.claimedDrops}
           icon={<CheckCircle2Icon />}
         />
         {/* <Card
