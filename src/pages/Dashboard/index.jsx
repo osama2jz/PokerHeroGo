@@ -1,9 +1,18 @@
-import { Box, Center, Group, Loader } from "@mantine/core";
-import React, { useContext } from "react";
+import {
+  Box,
+  Center,
+  Group,
+  Loader,
+  SimpleGrid,
+  Stack,
+  Title,
+} from "@mantine/core";
+import React, { useContext, useState } from "react";
 import PageHeader from "../../components/general/PageHeader";
 import Card from "./Card";
 import { useQuery } from "react-query";
 import axios from "axios";
+import Chart from "react-apexcharts";
 import { backendUrl } from "../../constants";
 import { UserContext } from "../../context";
 import {
@@ -17,6 +26,20 @@ import {
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
+  const [countries, setCountries] = useState({
+    options: {},
+    series: [44, 55, 41, 17, 15],
+    chartOptions: {
+      labels: ["USA", "UK", "Germany", "France", "Others"],
+    },
+  });
+  const [drops, setDrops] = useState({
+    options: {},
+    series: [44, 55],
+    chartOptions: {
+      labels: ["Live", "Claimed"],
+    },
+  });
   const { status, data } = useQuery(
     "fetchStats",
     () => {
@@ -30,7 +53,7 @@ const Dashboard = () => {
       onSuccess: (res) => {},
     }
   );
-  if (status === "loading")
+  if (false)
     return (
       <Center>
         <Loader />
@@ -48,16 +71,6 @@ const Dashboard = () => {
           value={data?.data?.data?.totalUsers}
           icon={<User2Icon />}
         />
-        {/* <Card
-          title={"Total Companies"}
-          value={data?.data?.data.totalCompanies}
-          icon={<Building2 />}
-        /> */}
-        <Card
-          title="Total Parks"
-          value={data?.data?.data?.totalParks}
-          icon={<TreePine />}
-        />
         <Card
           title="Total Drops"
           value={data?.data?.data?.totalDrops}
@@ -68,12 +81,31 @@ const Dashboard = () => {
           value={data?.data?.data?.claimedDrops}
           icon={<CheckCircle2Icon />}
         />
-        {/* <Card
-          title="Total Coupons"
-          value={data?.data?.data.totalCoupons}
-          icon={<Puzzle />}
-        /> */}
       </Group>
+      <SimpleGrid cols={2} my="md">
+        <Stack>
+          <Chart
+            options={countries.chartOptions}
+            series={countries.series}
+            type="pie"
+            height="300px"
+          />
+          <Title order={3} ta={"center"}>
+            Users Countries
+          </Title>
+        </Stack>
+        <Stack>
+          <Chart
+            options={drops.chartOptions}
+            series={drops.series}
+            type="donut"
+            height="300px"
+          />
+          <Title order={3} ta={"center"}>
+            All Drops 
+          </Title>
+        </Stack>
+      </SimpleGrid>
     </Box>
   );
 };
