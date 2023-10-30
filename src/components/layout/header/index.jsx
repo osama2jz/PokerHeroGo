@@ -17,6 +17,7 @@ export default function Header({ opened, toggle }) {
         onClick={toggle}
         hiddenFrom="sm"
         size="sm"
+        color="white"
         className="mantine-focus-never"
       />
       <Group>

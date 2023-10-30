@@ -28,7 +28,7 @@ function CustomAppShell() {
       </AppShell.Header>
 
       <AppShell.Navbar className={styles["sidebar"]}>
-        <Sidebar />
+        <Sidebar toggle={toggle}/>
       </AppShell.Navbar>
 
       <AppShell.Main bg={"rgb(0,0,0,0.1)"}>

@@ -82,7 +82,7 @@ const Dashboard = () => {
           icon={<CheckCircle2Icon />}
         />
       </Group>
-      <SimpleGrid cols={2} my="md">
+      <SimpleGrid cols={{ base: 1, md: 2 }} my="xl">
         <Stack>
           <Chart
             options={countries.chartOptions}
@@ -102,7 +102,7 @@ const Dashboard = () => {
             height="300px"
           />
           <Title order={3} ta={"center"}>
-            All Drops 
+            All Drops
           </Title>
         </Stack>
       </SimpleGrid>

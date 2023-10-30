@@ -12,7 +12,7 @@ import {
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
-export default function Sidebar() {
+export default function Sidebar({toggle}) {
   // State to keep track of active link
   const [active, setActive] = useState("Dashboard");
   const navigate = useNavigate();
@@ -100,6 +100,7 @@ export default function Sidebar() {
               onClick={() => {
                 navigate(item.to);
                 setActive(item.label);
+                toggle()
               }}
             />
           );
@@ -125,6 +126,7 @@ export default function Sidebar() {
                     onClick={() => {
                       navigate(child.to);
                       setActive(child.label);
+                      toggle()
                     }}
                   />
                 );
