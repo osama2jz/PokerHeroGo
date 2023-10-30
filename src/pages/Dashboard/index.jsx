@@ -45,7 +45,7 @@ const Dashboard = () => {
       <Group justify="space-between">
         <Card
           title={"Total Users"}
-          value={data?.data?.data.totalUsers}
+          value={data?.data?.data?.totalUsers}
           icon={<User2Icon />}
         />
         {/* <Card
