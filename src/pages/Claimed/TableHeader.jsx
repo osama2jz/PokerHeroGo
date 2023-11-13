@@ -14,12 +14,6 @@ export const Columns = [
     sortable: true,
   },
   {
-    name: "Park Name",
-    selector: (row) => row.park.name,
-    width: "200px",
-    sortable: true,
-  },
-  {
     name: "Claimed By",
     selector: (row) => row.claimedBy?.fullName,
     sortable: true,

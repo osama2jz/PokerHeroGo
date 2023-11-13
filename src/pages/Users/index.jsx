@@ -7,17 +7,23 @@ import Button from "../../components/general/Button";
 import { useMutation, useQuery } from "react-query";
 import axios from "axios";
 import { backendUrl } from "../../constants";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { UserContext } from "../../context";
 
 const Users = () => {
+  const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
   const { status } = useQuery(
     "fetchUsers",
     () => {
-      return axios.get(backendUrl + "/users");
+      return axios.get(backendUrl + "/users", {
+        headers: {
+          authorization: `${user.accessToken}`,
+        },
+      });
     },
     {
       onSuccess: (res) => {

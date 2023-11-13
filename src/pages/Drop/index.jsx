@@ -1,9 +1,15 @@
 import { Box, Checkbox, Flex, SimpleGrid, Stack } from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { CircleF, GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import {
+  Autocomplete,
+  CircleF,
+  GoogleMap,
+  LoadScript,
+  Marker,
+} from "@react-google-maps/api";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
 import Button from "../../components/general/Button";
@@ -12,12 +18,15 @@ import PageHeader from "../../components/general/PageHeader";
 import SelectMenu from "../../components/general/SelectMenu";
 import { backendUrl, pokerCards } from "../../constants";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context";
 
 const Drop = () => {
   const navigate = useNavigate();
+  const {user}=useContext(UserContext)
   const [center, setCenter] = useState({ lat: 30, lng: 70 });
   const [radius, setRadius] = useState(300);
   const [markers, setMarkers] = useState([]);
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   // Use the Geolocation API to get the user's location by default
   useEffect(() => {
@@ -45,7 +54,6 @@ const Drop = () => {
 
     validate: {
       dropName: (value) => (value?.length > 0 ? null : "Enter Drop Name"),
-      dropType: (value) => (value?.length > 0 ? null : "Enter Drop Type"),
       dropCoins: (value) => (value > 0 ? null : "Enter Drop Coins"),
       card: (value) => (value?.length > 0 ? null : "Select Card"),
       expirationDate: (value) => (value ? null : "Select Expiration Date"),
@@ -53,11 +61,32 @@ const Drop = () => {
         value?.length > 0 ? null : "Select Expiration Time",
     },
   });
+  console.log(form.errors);
+  const onPlaceChanged = () => {
+    if (selectedPlace != null) {
+      const place = selectedPlace.getPlace();
+      // const name = place.name;
+      setCenter({
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      });
+    } else {
+      alert("Please enter text");
+    }
+  };
+
+  const onLoad = useCallback((autocomplete) => {
+    setSelectedPlace(autocomplete);
+  }, []);
 
   const handleAddDrop = useMutation(
     async (values) => {
       values.locations = values.locations.map((obj) => Object.values(obj));
-      return axios.post(backendUrl + `/drops`, values);
+      return axios.post(backendUrl + `/drops`, values, {
+        headers: {
+          authorization: `${user.accessToken}`,
+        },
+      });
     },
     {
       onSuccess: (response) => {
@@ -113,6 +142,13 @@ const Drop = () => {
             libraries={["places"]}
             googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAP_KEY}
           >
+            <Autocomplete
+              types={["geocode"]}
+              onLoad={onLoad}
+              onPlaceChanged={onPlaceChanged}
+            >
+              <InputField placeholder="Search for a location" />
+            </Autocomplete>
             <Box style={{ minHeight: "500px" }}>
               <GoogleMap
                 mapContainerStyle={{
@@ -159,7 +195,13 @@ const Drop = () => {
               form={form}
               searchable
               data={pokerCards}
-              validateName="park"
+              validateName="card"
+            />
+            <InputField
+              label={"Area (Radius)"}
+              required
+              type="number"
+              onChange={(e) => setRadius(parseInt(e.target.value))}
             />
             <InputField
               label={"Number of Offers"}
@@ -172,16 +214,6 @@ const Drop = () => {
               required
               form={form}
               validateName={"dropCoins"}
-            />
-            <SelectMenu
-              label={"Offer Type"}
-              required
-              data={[
-                { label: "Video", value: "Video" },
-                { label: "Quiz", value: "Quiz" },
-              ]}
-              form={form}
-              validateName="dropType"
             />
             <Flex gap="md">
               <DateInput

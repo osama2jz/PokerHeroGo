@@ -81,7 +81,7 @@ const Live = () => {
         <Loader />
       </Center>
     );
-    
+  console.log(markers);
   return (
     <Stack>
       <PageHeader title={"Live"} subTitle={"View all of your live offers"} />

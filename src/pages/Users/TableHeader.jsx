@@ -30,13 +30,13 @@ export const Columns = (onHandleStatus) => [
   },
   {
     name: "Total Coins",
-    selector: (row) => row.parkCoins,
+    selector: (row) => row.coinsEarnedOverLifetime,
     sortable: true,
     center: true,
     width: "140px",
   },
   {
-    name: "Registeration Date",
+    name: "Registration Date",
     selector: (row) => row.createdAt,
     sortable: true,
     center: true,

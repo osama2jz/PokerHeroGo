@@ -21,18 +21,6 @@ export const Columns = (setOpen, setEditData) => [
     sortable: true,
   },
   {
-    name: "Drop Type",
-    selector: (row) => row.dropType,
-    grow: 1,
-    sortable: true,
-  },
-  {
-    name: "Park Name",
-    selector: (row) => row.park?.name,
-    grow: 1,
-    sortable: true,
-  },
-  {
     name: "Expiry Date",
     selector: (row) => row.expirationDate,
     width: "15  0px",

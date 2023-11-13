@@ -19,7 +19,7 @@ const Requests = () => {
   const { status } = useQuery(
     "fetchRequests",
     () => {
-      return axios.get(backendUrl + "/drops/Requests", {
+      return axios.get(backendUrl + "/request", {
         headers: {
           authorization: `${user.accessToken}`,
         },
