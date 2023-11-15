@@ -1,4 +1,5 @@
-export const backendUrl = "https://poker-hero-go-46fbd90a335c.herokuapp.com";
+// export const backendUrl = "https://poker-hero-go-46fbd90a335c.herokuapp.com";
+export const backendUrl = "http://localhost:3000";
 export const pokerCards = [
   "Ace of Hearts",
   "2 of Hearts",
@@ -52,4 +53,6 @@ export const pokerCards = [
   "Jack of Spades",
   "Queen of Spades",
   "King of Spades",
+  "P2E Joker",
+  "PRO Joker",
 ];

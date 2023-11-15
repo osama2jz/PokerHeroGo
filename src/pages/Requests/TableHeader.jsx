@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Badge, Text } from "@mantine/core";
 
 export const Columns = [
   {
@@ -8,27 +8,28 @@ export const Columns = [
     sortable: true,
   },
   {
-    name: "Offer Name",
-    selector: (row) => row.dropName,
-    width: "200px",
-    sortable: true,
-  },
-  {
-    name: "Park Name",
-    selector: (row) => row.park.name,
-    width: "200px",
-    sortable: true,
-  },
-  {
     name: "Request By",
-    selector: (row) => row.claimedBy?.fullName,
+    selector: (row) => row.user?.fullName,
     sortable: true,
     // center: true,
     width: "200px",
   },
   {
-    name: "Drop Coins",
-    selector: (row) => row.dropCoins,
+    name: "Request Type",
+    selector: (row) => row.conversionType,
+    width: "200px",
+    sortable: true,
+  },
+  {
+    name: "Hand Name",
+    selector: (row) => row?.handName,
+    sortable: true,
+    // center: true,
+    width: "150px",
+  },
+  {
+    name: "Coins",
+    selector: (row) => row?.coins,
     sortable: true,
     // center: true,
     width: "150px",
@@ -48,5 +49,13 @@ export const Columns = [
     center: true,
     width: "200px",
     cell: (row) => <Text>{new Date(row.createdAt).toLocaleTimeString()}</Text>,
+  },
+  {
+    name: "Status",
+    selector: (row) => row.status,
+    sortable: true,
+    center: true,
+    width: "200px",
+    cell: (row) => <Badge>{row.status}</Badge>,
   },
 ];

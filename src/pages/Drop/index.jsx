@@ -22,7 +22,7 @@ import { UserContext } from "../../context";
 
 const Drop = () => {
   const navigate = useNavigate();
-  const {user}=useContext(UserContext)
+  const { user } = useContext(UserContext);
   const [center, setCenter] = useState({ lat: 30, lng: 70 });
   const [radius, setRadius] = useState(300);
   const [markers, setMarkers] = useState([]);
@@ -43,25 +43,25 @@ const Drop = () => {
   const form = useForm({
     initialValues: {
       locations: [],
-      card: "",
       expirationDate: "",
       expirationTime: "",
+      scheduleDate: "",
+      scheduleTime: "",
       dropName: "",
       dropCoins: 0,
+      // noOfCards:null,
       noOfOffers: "",
       schedule: false,
     },
 
     validate: {
       dropName: (value) => (value?.length > 0 ? null : "Enter Drop Name"),
-      dropCoins: (value) => (value > 0 ? null : "Enter Drop Coins"),
-      card: (value) => (value?.length > 0 ? null : "Select Card"),
+      noOfOffers: (value) => (value ? null : "Select Number of Cards"),
       expirationDate: (value) => (value ? null : "Select Expiration Date"),
       expirationTime: (value) =>
         value?.length > 0 ? null : "Select Expiration Time",
     },
   });
-  console.log(form.errors);
   const onPlaceChanged = () => {
     if (selectedPlace != null) {
       const place = selectedPlace.getPlace();
@@ -131,6 +131,7 @@ const Drop = () => {
     setMarkers(points);
     form.setFieldValue("locations", points);
   };
+
   return (
     <Box>
       <PageHeader title={"Drop"} subTitle={"Drop your offer like its hot"} />
@@ -189,13 +190,20 @@ const Drop = () => {
               form={form}
               validateName="dropName"
             />
-            <SelectMenu
+            {/* <SelectMenu
               label={"Select Card"}
               required
               form={form}
               searchable
               data={pokerCards}
               validateName="card"
+            /> */}
+            <SelectMenu
+              label={"Number Of Cards"}
+              required
+              form={form}
+              data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+              validateName="noOfOffers"
             />
             <InputField
               label={"Area (Radius)"}
@@ -203,15 +211,14 @@ const Drop = () => {
               type="number"
               onChange={(e) => setRadius(parseInt(e.target.value))}
             />
-            <InputField
+            {/* <InputField
               label={"Number of Offers"}
               required
               form={form}
               validateName={"noOfOffers"}
-            />
+            /> */}
             <InputField
               label={"Drop Coins"}
-              required
               form={form}
               validateName={"dropCoins"}
             />
@@ -220,6 +227,7 @@ const Drop = () => {
                 label="Expiry Date"
                 placeholder="Expiry Date"
                 withAsterisk
+                minDate={new Date()}
                 style={{ width: "50%" }}
                 {...form.getInputProps("expirationDate")}
               />
@@ -239,15 +247,17 @@ const Drop = () => {
                 <DateInput
                   label="Schedule Date"
                   placeholder="Schedule Date"
+                  minDate={new Date()}
+                  maxDate={form.values.expirationDate}
                   withAsterisk
                   style={{ width: "50%" }}
-                  {...form.getInputProps("expirationDate")}
+                  {...form.getInputProps("scheduleDate")}
                 />
                 <TimeInput
                   label="Schedule Time"
                   withAsterisk
                   style={{ flex: 1 }}
-                  {...form.getInputProps("expirationTime")}
+                  {...form.getInputProps("scheduleTime")}
                 />
               </Flex>
             )}
