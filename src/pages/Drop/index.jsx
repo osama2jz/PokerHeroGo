@@ -161,7 +161,7 @@ const Drop = () => {
                 zoom={14}
               >
                 {markers.map((obj, ind) => (
-                  <Marker position={obj} title="Location" key={ind} />
+                  <Marker draggable position={obj} title="Location" key={ind} />
                 ))}
                 {center?.lat && (
                   <CircleF
