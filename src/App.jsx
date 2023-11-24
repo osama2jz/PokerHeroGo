@@ -17,7 +17,7 @@ import Coupons from "./pages/Coupons";
 import Signin from "./pages/Siginin";
 import Park from "./pages/Park";
 import Company from "./pages/Companies";
-import ViewParks from "./pages/Park/ViewParks";
+// import ViewParks from "./pages/Park/ViewParks";
 import ViewDrops from "./pages/Drop/ViewDrops";
 import Scheduled from "./pages/Scheduled";
 import Requests from "./pages/Requests";
@@ -30,8 +30,8 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/" element={<CustomAppShell />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/add-park" element={<Park />} />
-            <Route path="/park" element={<ViewParks />} />
+            {/* <Route path="/add-park" element={<Park />} />
+            <Route path="/park" element={<ViewParks />} /> */}
             <Route path="/add-drop" element={<Drop />} />
             <Route path="/drop" element={<ViewDrops />} />
             <Route path="/scheduled" element={<Scheduled />} />
