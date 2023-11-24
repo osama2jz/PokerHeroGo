@@ -12,7 +12,7 @@ export default function ProfileMenu() {
       <Menu.Target>
         <Group className={styles["menu-trigger-avatar"]}>
           <Avatar src={"/default-avatar.png"} />
-          <Text visibleFrom="xs" c='white'>Parks ID Admin</Text>
+          <Text visibleFrom="xs" c='white'>POKER HERO GO ADMIN</Text>
         </Group>
       </Menu.Target>
 
