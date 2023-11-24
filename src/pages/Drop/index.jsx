@@ -173,6 +173,21 @@ const Drop = () => {
                       strokeColor: "blue",
                       strokeOpacity: 0.8,
                     }}
+                    draggable={true}
+                    onDragEnd={(e) => {
+                      console.log("center", e.latLng.lat(), e.latLng.lng());
+                      setMarkers([]);
+                      setCenter({
+                        lat: e.latLng.lat(),
+                        lng: e.latLng.lng(),
+                      });
+                    }}
+                    onCenterChanged={() => {
+                      setMarkers([]);
+                    }}
+                    onRadiusChanged={() => {
+                      setMarkers([]);
+                    }}
                   />
                 )}
               </GoogleMap>
