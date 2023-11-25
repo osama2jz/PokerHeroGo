@@ -105,6 +105,7 @@ const StatusMenu = ({ status, id }) => {
     <Menu>
       <Menu.Target>
         <Badge
+          style={{ cursor: status === "Pending" ? "pointer" : "default" }}
           rightSection={status === "Pending" ? <span>▼</span> : null}
           color={
             status === "Pending"
