@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import { backendUrl } from "../../constants";
 import axios from "axios";
 import { UserContext } from "../../context";
+import toast from "react-hot-toast";
 
 const Requests = () => {
   const { user } = useContext(UserContext);
@@ -32,12 +33,19 @@ const Requests = () => {
           return { ...obj, serialNo: ind + 1 };
         });
         setData(newData);
+        toast.dismiss();
       },
     }
   );
   const filteredItems = data.filter((item) => {
-    return item?.user?.fullName?.toLowerCase().includes(search.toLowerCase());
+    const filterData =
+      filter === "All" ? true : item?.conversionType === filter;
+    return (
+      filterData &&
+      item?.user?.fullName?.toLowerCase().includes(search.toLowerCase())
+    );
   });
+
   return (
     <Box>
       <PageHeader
@@ -53,7 +61,7 @@ const Requests = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <SelectMenu
-          data={["All", "NFT", "Crypto", "Pokerhand"]}
+          data={["All", "NFT", "Crypto", { label: "Pokerhand", value: "Coin" }]}
           placeholder="Filter"
           value={filter}
           onChange={setFilter}
