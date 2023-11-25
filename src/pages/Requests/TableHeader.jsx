@@ -1,4 +1,10 @@
-import { Badge, Text } from "@mantine/core";
+import { Badge, Menu, Text } from "@mantine/core";
+import { useContext } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { UserContext } from "../../context";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { backendUrl } from "../../constants";
 
 export const Columns = [
   {
@@ -15,6 +21,12 @@ export const Columns = [
     width: "200px",
   },
   {
+    name: "Wallet Address",
+    selector: (row) => row.user?.walletAddress,
+    width: "180px",
+    sortable: true,
+  },
+  {
     name: "Request Type",
     selector: (row) => row.conversionType,
     width: "200px",
@@ -29,10 +41,10 @@ export const Columns = [
   },
   {
     name: "Coins",
-    selector: (row) => row?.coins,
+    selector: (row) => Math.abs(row?.coins),
     sortable: true,
     // center: true,
-    width: "150px",
+    width: "100px",
   },
   {
     name: "Request Date",
@@ -56,6 +68,93 @@ export const Columns = [
     sortable: true,
     center: true,
     width: "200px",
-    cell: (row) => <Badge>{row.status}</Badge>,
+    cell: (row) => <StatusMenu status={row.status} id={row._id} />,
   },
 ];
+
+const StatusMenu = ({ status, id }) => {
+  const { user } = useContext(UserContext);
+  const queryClient = useQueryClient();
+
+  const handleUpdateRequestStatus = useMutation(
+    async ({ status }) => {
+      if (status) {
+        return axios.patch(
+          backendUrl + `/request/change-status/${id}`,
+          { status },
+          {
+            headers: {
+              authorization: `${user.accessToken}`,
+            },
+          }
+        );
+      }
+    },
+    {
+      onSuccess: (response) => {
+        toast.loading("Updating Table Please Wait");
+        toast.success(response.data.message);
+        queryClient.invalidateQueries("fetchRequests");
+      },
+      onError: (err) => {
+        toast.error(err.response.data.message);
+      },
+    }
+  );
+  return (
+    <Menu>
+      <Menu.Target>
+        <Badge
+          rightSection={status === "Pending" ? <span>▼</span> : null}
+          color={
+            status === "Pending"
+              ? "orange"
+              : status === "Accepted"
+              ? "green"
+              : "red"
+          }
+          variant="light"
+        >
+          {status}
+        </Badge>
+      </Menu.Target>
+
+      {status === "Pending" ? (
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={() => {
+              handleUpdateRequestStatus.mutate({ id, status: "Accepted" });
+            }}
+          >
+            <StatusBadge status={"Accepted"} />
+          </Menu.Item>
+          <Menu.Item
+            onClick={() => {
+              handleUpdateRequestStatus.mutate({ id, status: "Denied" });
+            }}
+          >
+            <StatusBadge status={"Denied"} />
+          </Menu.Item>
+        </Menu.Dropdown>
+      ) : null}
+    </Menu>
+  );
+};
+
+const StatusBadge = ({ status }) => {
+  return (
+    <Badge
+      color={
+        status === "Pending"
+          ? "orange"
+          : status === "Accepted"
+          ? "green"
+          : "red"
+      }
+      variant="light"
+      w="100%"
+    >
+      {status}
+    </Badge>
+  );
+};
