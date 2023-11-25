@@ -27,6 +27,7 @@ const Drop = () => {
   const [radius, setRadius] = useState(300);
   const [markers, setMarkers] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Use the Geolocation API to get the user's location by default
   useEffect(() => {
@@ -71,7 +72,7 @@ const Drop = () => {
         lng: place.geometry.location.lng(),
       });
     } else {
-      alert("Please enter text");
+      console.log("Autocomplete is not loaded yet!");
     }
   };
 
@@ -81,6 +82,7 @@ const Drop = () => {
 
   const handleAddDrop = useMutation(
     async (values) => {
+      setLoading(true);
       values.locations = values.locations.map((obj) => Object.values(obj));
       return axios.post(backendUrl + `/drops`, values, {
         headers: {
@@ -92,10 +94,12 @@ const Drop = () => {
       onSuccess: (response) => {
         toast.success(response.data.message);
         form.reset();
+        setLoading(false);
         navigate("/drop");
       },
       onError: (err) => {
         toast.error(err.response.data.message);
+        setLoading(false);
       },
     }
   );
@@ -227,16 +231,10 @@ const Drop = () => {
               onChange={(e) => setRadius(parseInt(e.target.value))}
             />
             {/* <InputField
-              label={"Number of Offers"}
-              required
-              form={form}
-              validateName={"noOfOffers"}
-            /> */}
-            <InputField
               label={"Drop Coins"}
               form={form}
               validateName={"dropCoins"}
-            />
+            /> */}
             <Flex gap="md">
               <DateInput
                 label="Expiry Date"
@@ -284,6 +282,7 @@ const Drop = () => {
                 style={{ flex: 1 }}
               />
               <Button
+                loading={loading}
                 label={"Drop Offer"}
                 style={{ flex: 1 }}
                 type={"submit"}
