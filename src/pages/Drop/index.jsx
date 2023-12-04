@@ -1,23 +1,20 @@
-import { Box, Checkbox, Flex, SimpleGrid, Stack } from "@mantine/core";
+import { Box, Checkbox, Flex, Stack } from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import {
   Autocomplete,
   CircleF,
-  GoogleMap,
-  LoadScript,
-  Marker,
-  useJsApiLoader,
+  GoogleMap, Marker,
+  useJsApiLoader
 } from "@react-google-maps/api";
 import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import Button from "../../components/general/Button";
 import InputField from "../../components/general/InputField";
 import PageHeader from "../../components/general/PageHeader";
-import SelectMenu from "../../components/general/SelectMenu";
-import { backendUrl, pokerCards } from "../../constants";
+import { backendUrl } from "../../constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
 

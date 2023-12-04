@@ -1,11 +1,9 @@
 import { Box, Center, Loader, Stack } from "@mantine/core";
 import {
   Autocomplete,
-  GoogleMap,
-  LoadScript,
-  Marker,
-  MarkerClustererF,
+  GoogleMap, MarkerClustererF,
   MarkerF,
+  useJsApiLoader
 } from "@react-google-maps/api";
 import { useCallback, useContext, useEffect, useState } from "react";
 import InputField from "../../components/general/InputField";
@@ -16,6 +14,12 @@ import { backendUrl } from "../../constants";
 import { UserContext } from "../../context";
 
 const Live = () => {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+    libraries: ["places", "geometry", "drawing"],
+  });
+
   const { user } = useContext(UserContext);
   const [markers, setMarkers] = useState([]);
   const [center, setCenter] = useState({ lat: 30, lng: 70 });
@@ -84,44 +88,42 @@ const Live = () => {
   return (
     <Stack>
       <PageHeader title={"Live"} subTitle={"View all of your live offers"} />
-      <LoadScript
-        id="script-loader"
-        libraries={["places"]}
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAP_KEY}
-      >
-        <Autocomplete
-          types={["geocode"]}
-          onLoad={onLoad}
-          onPlaceChanged={onPlaceChanged}
-        >
-          <InputField placeholder="Search for a location" />
-        </Autocomplete>
-        <Box style={{ height: "480px", width: "100%" }}>
-          <GoogleMap
-            mapContainerStyle={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "20px",
-            }}
-            center={center}
-            zoom={2}
+      {isLoaded && (
+        <>
+          <Autocomplete
+            types={["geocode"]}
+            onLoad={onLoad}
+            onPlaceChanged={onPlaceChanged}
           >
-            <MarkerClustererF>
-              {(clusterer) => {
-                return markers.map((obj, ind) => (
-                  <MarkerF
-                    position={obj.coords}
-                    title="Location"
-                    key={ind}
-                    label={obj.label}
-                    clusterer={clusterer}
-                  />
-                ));
+            <InputField placeholder="Search for a location" />
+          </Autocomplete>
+          <Box style={{ height: "480px", width: "100%" }}>
+            <GoogleMap
+              mapContainerStyle={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "20px",
               }}
-            </MarkerClustererF>
-          </GoogleMap>
-        </Box>
-      </LoadScript>
+              center={center}
+              zoom={2}
+            >
+              <MarkerClustererF>
+                {(clusterer) => {
+                  return markers.map((obj, ind) => (
+                    <MarkerF
+                      position={obj.coords}
+                      title="Location"
+                      key={ind}
+                      label={obj.label}
+                      clusterer={clusterer}
+                    />
+                  ));
+                }}
+              </MarkerClustererF>
+            </GoogleMap>
+          </Box>
+        </>
+      )}
     </Stack>
   );
 };

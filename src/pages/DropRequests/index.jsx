@@ -9,7 +9,6 @@ import { useQuery } from "react-query";
 import { backendUrl } from "../../constants";
 import axios from "axios";
 import { UserContext } from "../../context";
-import { LoadScript } from "@react-google-maps/api";
 
 const DropRequests = () => {
   const { user } = useContext(UserContext);

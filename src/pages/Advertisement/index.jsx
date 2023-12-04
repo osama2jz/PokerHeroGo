@@ -125,7 +125,7 @@ const Advertisements = () => {
                 size="md"
               />
               <TextInput
-                label="Advertisement Cover Image"
+                label="Advertisement Cover Image URL"
                 {...form.getInputProps("coverImage")}
                 size="md"
               />

@@ -13,7 +13,7 @@ export const Columns = [
     sortable: true,
   },
   {
-    name: "Advertisement CoverImage",
+    name: "Cover Image",
     selector: (row) => row.coverImage,
     sortable: true,
     cell: (row) => (
