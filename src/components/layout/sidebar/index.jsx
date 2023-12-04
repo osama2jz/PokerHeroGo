@@ -48,9 +48,9 @@ export default function Sidebar({ toggle }) {
             to: "/live",
           },
           {
-            label: "Expired",
+            label: "Drop-History",
             icon: <FileWarning size={18} />,
-            to: "/expired",
+            to: "/drop-history",
           },
           {
             label: "Drop-Requests",
