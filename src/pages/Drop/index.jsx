@@ -7,6 +7,7 @@ import {
   GoogleMap,
   LoadScript,
   Marker,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -17,17 +18,30 @@ import InputField from "../../components/general/InputField";
 import PageHeader from "../../components/general/PageHeader";
 import SelectMenu from "../../components/general/SelectMenu";
 import { backendUrl, pokerCards } from "../../constants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
 
 const Drop = () => {
+  // get dropsCount, passedCenter, passedRadius from location state
+  const {
+    dropsCount,
+    center: passedCenter,
+    radius: passedRadius,
+    dropName,
+  } = useLocation().state || {};
+
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [center, setCenter] = useState({ lat: 30, lng: 70 });
-  const [radius, setRadius] = useState(300);
+  const [center, setCenter] = useState(passedCenter || { lat: 30, lng: 70 });
+  const [radius, setRadius] = useState(passedRadius || 300);
   const [markers, setMarkers] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+    libraries: ["places", "geometry", "drawing"],
+  });
 
   // Use the Geolocation API to get the user's location by default
   useEffect(() => {
@@ -40,7 +54,6 @@ const Drop = () => {
       });
     }
   }, []);
-
   const form = useForm({
     initialValues: {
       locations: [],
@@ -48,10 +61,10 @@ const Drop = () => {
       expirationTime: "",
       scheduleDate: "",
       scheduleTime: "",
-      dropName: "",
+      dropName: dropName ? `Re-${dropName}` : "",
       dropCoins: 0,
       // noOfCards:null,
-      noOfOffers: "",
+      noOfOffers: dropsCount || "",
       schedule: false,
     },
 
@@ -84,6 +97,8 @@ const Drop = () => {
     async (values) => {
       setLoading(true);
       values.locations = values.locations.map((obj) => Object.values(obj));
+      values.center = center;
+      values.radius = radius;
       return axios.post(backendUrl + `/drops`, values, {
         headers: {
           authorization: `${user.accessToken}`,
@@ -142,61 +157,64 @@ const Drop = () => {
 
       <Flex gap="lg" wrap={{ base: "wrap", lg: "nowrap" }}>
         <Stack w={{ base: "100%", lg: "75%" }}>
-          <LoadScript
-            id="script-loader"
-            libraries={["places"]}
-            googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAP_KEY}
-          >
-            <Autocomplete
-              types={["geocode"]}
-              onLoad={onLoad}
-              onPlaceChanged={onPlaceChanged}
-            >
-              <InputField placeholder="Search for a location" />
-            </Autocomplete>
-            <Box style={{ minHeight: "500px" }}>
-              <GoogleMap
-                mapContainerStyle={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "20px",
-                }}
-                center={center}
-                zoom={14}
+          {isLoaded && (
+            <>
+              <Autocomplete
+                types={["geocode"]}
+                onLoad={onLoad}
+                onPlaceChanged={onPlaceChanged}
               >
-                {markers.map((obj, ind) => (
-                  <Marker draggable position={obj} title="Location" key={ind} />
-                ))}
-                {center?.lat && (
-                  <CircleF
-                    center={center}
-                    radius={parseInt(radius)}
-                    options={{
-                      fillColor: "blue",
-                      fillOpacity: 0.2,
-                      strokeColor: "blue",
-                      strokeOpacity: 0.8,
-                    }}
-                    draggable={true}
-                    onDragEnd={(e) => {
-                      console.log("center", e.latLng.lat(), e.latLng.lng());
-                      setMarkers([]);
-                      setCenter({
-                        lat: e.latLng.lat(),
-                        lng: e.latLng.lng(),
-                      });
-                    }}
-                    onCenterChanged={() => {
-                      setMarkers([]);
-                    }}
-                    onRadiusChanged={() => {
-                      setMarkers([]);
-                    }}
-                  />
-                )}
-              </GoogleMap>
-            </Box>
-          </LoadScript>
+                <InputField placeholder="Search for a location" />
+              </Autocomplete>
+              <Box style={{ minHeight: "500px" }}>
+                <GoogleMap
+                  mapContainerStyle={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: "20px",
+                  }}
+                  center={center}
+                  zoom={14}
+                >
+                  {markers.map((obj, ind) => (
+                    <Marker
+                      draggable
+                      position={obj}
+                      title="Location"
+                      key={ind}
+                    />
+                  ))}
+                  {center?.lat && (
+                    <CircleF
+                      center={center}
+                      radius={parseInt(radius)}
+                      options={{
+                        fillColor: "blue",
+                        fillOpacity: 0.2,
+                        strokeColor: "blue",
+                        strokeOpacity: 0.8,
+                      }}
+                      draggable={true}
+                      onDragEnd={(e) => {
+                        console.log("center", e.latLng.lat(), e.latLng.lng());
+                        setMarkers([]);
+                        setCenter({
+                          lat: e.latLng.lat(),
+                          lng: e.latLng.lng(),
+                        });
+                      }}
+                      onCenterChanged={() => {
+                        setMarkers([]);
+                      }}
+                      onRadiusChanged={() => {
+                        setMarkers([]);
+                      }}
+                    />
+                  )}
+                </GoogleMap>
+              </Box>
+            </>
+          )}
         </Stack>
         <form
           style={{ flex: 1 }}
@@ -217,15 +235,15 @@ const Drop = () => {
               data={pokerCards}
               validateName="card"
             /> */}
-            <SelectMenu
+            <InputField
               label={"Number Of Cards"}
               required
               form={form}
-              data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
               validateName="noOfOffers"
             />
             <InputField
               label={"Area (Radius)"}
+              value={radius}
               required
               type="number"
               onChange={(e) => setRadius(parseInt(e.target.value))}
