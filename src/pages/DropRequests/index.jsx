@@ -71,7 +71,11 @@ const DropRequests = () => {
     }
   );
   const filteredItems = data.filter((item) => {
-    return true;
+    if (!search) return true;
+    return (
+      item?.user?.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      item?.type?.toLowerCase().includes(search.toLowerCase())
+    );
   });
   return (
     <Box>

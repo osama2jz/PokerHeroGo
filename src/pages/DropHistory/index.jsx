@@ -71,7 +71,11 @@ const DropHistory = () => {
     }
   );
   const filteredItems = data.filter((item) => {
-    return true;
+    if (!search) return true;
+    return (
+      item?.dropName?.toLowerCase().includes(search.toLowerCase()) ||
+      item?.centerLocation?.toLowerCase().includes(search.toLowerCase())
+    );
   });
   return (
     <Box>

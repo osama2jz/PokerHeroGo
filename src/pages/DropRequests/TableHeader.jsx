@@ -15,6 +15,12 @@ export const Columns = [
     sortable: true,
   },
   {
+    name: "User",
+    selector: (row) => row.user?.fullName,
+    width: "240px",
+    sortable: true,
+  },
+  {
     name: "Center",
     selector: (row) => row.centerLocation,
     cell: (row) => (
