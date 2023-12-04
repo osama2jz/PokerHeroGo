@@ -87,6 +87,11 @@ export default function Sidebar({ toggle }) {
         isLink: false,
         children: [
           {
+            label: "Social Media Links",
+            icon: <Settings size={18} />,
+            to: "/social-media-links",
+          },
+          {
             label: "Advertisements",
             icon: <Settings size={18} />,
             to: "/advertisements",

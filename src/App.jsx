@@ -24,6 +24,7 @@ import DropHistory from "./pages/DropHistory";
 import DropRequests from "./pages/DropRequests";
 import Tutorials from "./pages/Tutorials";
 import Advertisements from "./pages/Advertisement";
+import SocialMediaLinks from "./pages/SocialMediaLinks";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/coupons" element={<Coupons />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/advertisements" element={<Advertisements />} /> 
+            <Route path="/social-media-links" element={<SocialMediaLinks />} /> 
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Route>
