@@ -21,6 +21,8 @@ import Company from "./pages/Companies";
 import ViewDrops from "./pages/Drop/ViewDrops";
 import Scheduled from "./pages/Scheduled";
 import Requests from "./pages/Requests";
+import DropHistory from "./pages/DropHistory";
+import DropRequests from "./pages/DropRequests";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
             <Route path="/drop" element={<ViewDrops />} />
             <Route path="/scheduled" element={<Scheduled />} />
             <Route path="/live" element={<Live />} />
+            <Route path="/drop-history" element={<DropHistory />} />
+            <Route path="/drop-requests" element={<DropRequests />} />
             <Route path="/claimed" element={<Claimed />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/users" element={<Users />} />
