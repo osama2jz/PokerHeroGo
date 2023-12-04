@@ -3,7 +3,8 @@ import {
   CalendarCheck,
   CheckCircle2Icon,
   DropletIcon,
-  GaugeCircleIcon,
+  FileWarning,
+  GaugeCircleIcon, GitPullRequestDraftIcon,
   HelpCircle,
   Settings,
   StarIcon,
@@ -12,7 +13,7 @@ import {
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
-export default function Sidebar({toggle}) {
+export default function Sidebar({ toggle }) {
   // State to keep track of active link
   const [active, setActive] = useState("Dashboard");
   const navigate = useNavigate();
@@ -45,6 +46,16 @@ export default function Sidebar({toggle}) {
             label: "Live",
             icon: <StarIcon size={18} />,
             to: "/live",
+          },
+          {
+            label: "Expired",
+            icon: <FileWarning size={18} />,
+            to: "/expired",
+          },
+          {
+            label: "Drop-Requests",
+            icon: <GitPullRequestDraftIcon size={18} />,
+            to: "/drop-requests",
           },
           {
             label: "Claimed",
@@ -100,7 +111,7 @@ export default function Sidebar({toggle}) {
               onClick={() => {
                 navigate(item.to);
                 setActive(item.label);
-                toggle()
+                toggle();
               }}
             />
           );
@@ -126,7 +137,7 @@ export default function Sidebar({toggle}) {
                     onClick={() => {
                       navigate(child.to);
                       setActive(child.label);
-                      toggle()
+                      toggle();
                     }}
                   />
                 );
