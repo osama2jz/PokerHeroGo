@@ -196,7 +196,6 @@ const Drop = () => {
                       }}
                       draggable={true}
                       onDragEnd={(e) => {
-                        console.log("center", e.latLng.lat(), e.latLng.lng());
                         setMarkers([]);
                         setCenter({
                           lat: e.latLng.lat(),
