@@ -155,19 +155,6 @@ const Advertisements = () => {
             title={"Advertisements Table"}
             subTitle={"View all Advertisements"}
           />
-          <Flex gap="xl" my="md">
-            <InputField
-              placeholder={"Search Drop..."}
-              style={{ flex: 1 }}
-              leftIcon={"search"}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <Button
-              primary={false}
-              label={"Clear"}
-              onClick={() => setOpen(true)}
-            />
-          </Flex>
           <DataGrid
             data={data}
             columns={Columns}
