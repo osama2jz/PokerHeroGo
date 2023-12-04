@@ -77,8 +77,8 @@ const DropRequests = () => {
   return (
     <Box>
       <PageHeader
-        title={"Drop History"}
-        subTitle={"View all of your Drop History"}
+        title={"Drop Requests"}
+        subTitle={"View all of your Drop Requests"}
       />
       <Flex gap="xl" my="md">
         <InputField
