@@ -9,6 +9,7 @@ import { useQuery } from "react-query";
 import { backendUrl } from "../../constants";
 import axios from "axios";
 import { UserContext } from "../../context";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 const DropHistory = () => {
   const { user } = useContext(UserContext);
