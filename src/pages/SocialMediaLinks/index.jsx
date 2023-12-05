@@ -66,11 +66,11 @@ const SocialMediaLinks = () => {
           ? null
           : "Please enter valid facebook url e.g. https://facebook.com/username",
       x: (value) =>
-        /^(https?:\/\/)?(www\.)?twitter\.com\/[a-zA-Z0-9.-]+\/?$/.test(value)
+        /^(https?:\/\/)?(www\.)?twitter\.com\/[a-zA-Z0-9.-_]+\/?$/.test(value)
           ? null
           : "Please enter valid twitter url e.g. https://twitter.com/username",
       instagram: (value) =>
-        /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9.-]+\/?$/.test(value)
+        /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9.-_]+\/?$/.test(value)
           ? null
           : "Please enter valid instagram url e.g. https://instagram.com/username",
     },
