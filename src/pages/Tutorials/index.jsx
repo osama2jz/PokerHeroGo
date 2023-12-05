@@ -40,7 +40,14 @@ const Tutorials = () => {
       onSuccess: (res) => {
         const data = res.data.data;
         let newData = data.map((obj, ind) => {
-          return { ...obj, serialNo: ind + 1 };
+          let linkURL = obj.link;
+          // if obj.link is an iframe
+          if (linkURL.includes("iframe")) {
+            let link = linkURL.split("src=");
+            let newLink = link[1].split(" ");
+            linkURL = newLink[0].replace(/"/g, "");
+          }
+          return { ...obj, serialNo: ind + 1, linkURL };
         });
         setData(newData);
         toast.dismiss();
@@ -120,7 +127,7 @@ const Tutorials = () => {
                 size="md"
               />
               <TextInput
-                label="Tutorial Link"
+                label="Tutorial Link (iframe)"
                 {...form.getInputProps("link")}
                 size="md"
               />

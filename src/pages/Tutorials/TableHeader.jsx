@@ -17,7 +17,7 @@ export const Columns = [
     selector: (row) => row.link,
     sortable: true,
     cell: (row) => (
-      <a href={row.link} target="_blank">
+      <a href={row.linkURL} target="_blank">
         {row.link}
       </a>
     ),
