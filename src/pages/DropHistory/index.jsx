@@ -14,19 +14,15 @@ const DropHistory = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+    libraries: ["places", "geometry", "drawing"],
+  });
 
   const { status } = useQuery(
     "fetchDropHistory",
     () => {
-      // load the google maps script if not already loaded
-      const script = document.createElement(`script`);
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${
-        import.meta.env.VITE_GOOGLE_MAP_KEY
-      }&libraries=places`;
-      script.async = true;
-
-      document.head.append(script);
-
       return axios.get(backendUrl + "/drop-history", {
         headers: {
           authorization: `${user.accessToken}`,
@@ -58,16 +54,10 @@ const DropHistory = () => {
         await Promise.all(newData).then((res) => {
           newData = res;
         });
-        //cleanup the google maps script
-        const script = document.querySelector(
-          `script[src="https://maps.googleapis.com/maps/api/js?key=${
-            import.meta.env.VITE_GOOGLE_MAP_KEY
-          }"]`
-        );
-        script?.remove();
 
         setData(newData);
       },
+      enabled: isLoaded,
     }
   );
   const filteredItems = data.filter((item) => {

@@ -14,7 +14,11 @@ const DropRequests = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+    libraries: ["places", "geometry", "drawing"],
+  });
   const { status } = useQuery(
     "fetchDropRequests",
     () => {
@@ -68,7 +72,9 @@ const DropRequests = () => {
 
         setData(newData);
       },
-    }
+      enabled: isLoaded,
+    }, 
+  
   );
   const filteredItems = data.filter((item) => {
     if (!search) return true;
