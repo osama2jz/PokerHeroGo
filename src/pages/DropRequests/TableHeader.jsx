@@ -1,10 +1,5 @@
-import { Text, UnstyledButton } from "@mantine/core";
-import ActionIcons from "../../components/general/ActionIcons";
-import {
-  ArrowBarToLeft,
-  ArrowBarToRight,
-  Navigation,
-} from "tabler-icons-react";
+import { Button, Text, UnstyledButton } from "@mantine/core";
+import { DiscountCheck } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
 
 export const Columns = [
@@ -66,7 +61,7 @@ const NavigateToAddDrop = ({
   const navigate = useNavigate();
 
   return (
-    <UnstyledButton
+    <Button
       onClick={() => {
         navigate("/add-drop", {
           state: {
@@ -77,10 +72,12 @@ const NavigateToAddDrop = ({
           },
         });
       }}
-      style={{ cursor: disabled ? "default" : "pointer" }}
+      style={{ cursor: disabled ? "default" : "pointer", display: "flex" }}
       disabled={disabled}
+      variant="outline"
+      leftSection={<DiscountCheck color={disabled ? "grey" : "blue"} />}
     >
-      <ArrowBarToRight color={disabled ? "grey" : "blue"} />
-    </UnstyledButton>
+      Add
+    </Button>
   );
 };

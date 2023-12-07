@@ -1,10 +1,5 @@
-import { Text, UnstyledButton } from "@mantine/core";
-import ActionIcons from "../../components/general/ActionIcons";
-import {
-  ArrowBarToLeft,
-  ArrowBarToRight,
-  Navigation,
-} from "tabler-icons-react";
+import { Button, Text } from "@mantine/core";
+import { Repeat } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
 
 export const Columns = [
@@ -33,11 +28,11 @@ export const Columns = [
     width: "140px",
   },
   {
-    name: "Drop Count",
+    name: "Drops",
     selector: (row) => row.dropsCount,
     sortable: true,
     // center: true,
-    width: "140px",
+    width: "100px",
   },
   {
     name: "Expiry",
@@ -70,7 +65,7 @@ export const Columns = [
   {
     name: "Actions",
     center: true,
-    width: "100px",
+    width: "140px",
     cell: (row) => (
       <NavigateToAddDrop
         disabled={new Date().getTime() < new Date(row.expiry).getTime()}
@@ -93,21 +88,23 @@ const NavigateToAddDrop = ({
   const navigate = useNavigate();
 
   return (
-    <UnstyledButton
+    <Button
       onClick={() => {
         navigate("/add-drop", {
           state: {
-            dropsCount,
+            dropsCount: 20,
             center,
             dropName,
             radius,
           },
         });
       }}
-      style={{ cursor: disabled ? "default" : "pointer" }}
+      style={{ cursor: disabled ? "default" : "pointer", display: "flex" }}
       disabled={disabled}
+      variant="outline"
+      leftSection={<Repeat color={disabled ? "grey" : "blue"} />}
     >
-      <ArrowBarToRight color={disabled ? "grey" : "blue"} />
-    </UnstyledButton>
+      Re-drop
+    </Button>
   );
 };
