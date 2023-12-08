@@ -1,6 +1,7 @@
 import { Button, Text, UnstyledButton } from "@mantine/core";
 import { DiscountCheck } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment-timezone";
 
 export const Columns = [
   {
@@ -36,7 +37,11 @@ export const Columns = [
     selector: (row) => row.createdAt,
     sortable: true,
     center: true,
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleDateString()}</Text>,
+    cell: (row) => (
+      <Text>
+        {moment(row.createdAt).tz("Asia/Shanghai").format("DD-MM-YYYY")}
+      </Text>
+    ),
   },
   {
     name: "Actions",

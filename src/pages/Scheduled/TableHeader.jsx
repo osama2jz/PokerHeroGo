@@ -1,5 +1,6 @@
 import { Text } from "@mantine/core";
 import ActionIcons from "../../components/general/ActionIcons";
+import moment from "moment-timezone";
 
 export const Columns = [
   {
@@ -26,42 +27,32 @@ export const Columns = [
     selector: (row) => row.createdAt,
     sortable: true,
     center: true,
-    width: "160px",
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleDateString()}</Text>,
+    cell: (row) => (
+      <Text>
+        {moment(row.scheduleDate)
+          .tz("Asia/Shanghai")
+          .format("DD-MM-YYYY - hh:mm A")}
+      </Text>
+    ),
   },
-  {
-    name: "Schedule Time",
-    selector: (row) => row.createdAt,
-    sortable: true,
-    center: true,
-    width: "160px",
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleTimeString()}</Text>,
-  },
+
   {
     name: "Expiry Date",
     selector: (row) => row.expirationDate,
-    width: "150px",
     sortable: true,
     cell: (row) => (
-      <Text>{new Date(row.expirationDate).toLocaleDateString()}</Text>
+      <Text>
+        {moment(row.expirationDate)
+          .tz("Asia/Shanghai")
+          .format("DD-MM-YYYY - hh:mm A")}
+      </Text>
     ),
   },
-  {
-    name: "Expiry Time",
-    selector: (row) => row.expirationTime,
-    width:"150px",
-    sortable: true,
-  },
+
   {
     name: "Actions",
     center: true,
     width: "100px",
-    cell: (row) => (
-      <ActionIcons
-        rowData={row}
-        del={true}
-        type="drops"
-      />
-    ),
+    cell: (row) => <ActionIcons rowData={row} del={true} type="drops" />,
   },
 ];

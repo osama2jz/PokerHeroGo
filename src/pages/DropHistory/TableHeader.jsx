@@ -1,6 +1,7 @@
 import { Button, Text } from "@mantine/core";
 import { Repeat } from "tabler-icons-react";
 import { useNavigate } from "react-router-dom";
+import moment from "moment-timezone";
 
 export const Columns = [
   {
@@ -40,7 +41,11 @@ export const Columns = [
     sortable: true,
     center: true,
     width: "160px",
-    cell: (row) => <Text>{new Date(row.expiry).toLocaleString()}</Text>,
+    cell: (row) => (
+      <Text>
+        {moment(row.expiry).tz("Asia/Shanghai").format("DD-MM-YYYY - hh:mm A")}
+      </Text>
+    ),
   },
   {
     name: "Is Expired",
@@ -50,7 +55,10 @@ export const Columns = [
     width: "160px",
     cell: (row) => (
       <Text>
-        {new Date().getTime() > new Date(row.expiry).getTime() ? "Yes" : "No"}
+        {moment(row.expiry).tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm") <
+        moment().tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm")
+          ? "Yes"
+          : "No"}
       </Text>
     ),
   },
@@ -60,7 +68,11 @@ export const Columns = [
     sortable: true,
     center: true,
     width: "160px",
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleDateString()}</Text>,
+    cell: (row) => (
+      <Text>
+        {moment(row.createdAt).tz("Asia/Shanghai").format("DD-MM-YYYY")}
+      </Text>
+    ),
   },
   {
     name: "Actions",
@@ -68,7 +80,10 @@ export const Columns = [
     width: "140px",
     cell: (row) => (
       <NavigateToAddDrop
-        disabled={new Date().getTime() < new Date(row.expiry).getTime()}
+        disabled={
+          moment(row.expiry).tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm") <
+          moment().tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm")
+        }
         center={row.center}
         dropsCount={row.dropsCount}
         radius={row.radius}
