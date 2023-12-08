@@ -18,6 +18,7 @@
     "axios": "^1.5.1",
     "google-map-react": "^2.2.1",
     "lucide-react": "^0.284.0",
+    "moment-timezone": "^0.5.43",
     "papaparse": "^5.4.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",

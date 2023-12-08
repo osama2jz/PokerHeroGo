@@ -4,8 +4,9 @@ import { useForm } from "@mantine/form";
 import {
   Autocomplete,
   CircleF,
-  GoogleMap, Marker,
-  useJsApiLoader
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -17,6 +18,8 @@ import PageHeader from "../../components/general/PageHeader";
 import { backendUrl } from "../../constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context";
+import SelectMenu from "../../components/general/SelectMenu";
+import moment from "moment-timezone";
 
 const Drop = () => {
   // get dropsCount, passedCenter, passedRadius from location state
@@ -39,6 +42,8 @@ const Drop = () => {
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
     libraries: ["places", "geometry", "drawing"],
   });
+
+  const dropTypes = ["Coin", "Joker", "Poker Card"];
 
   // Use the Geolocation API to get the user's location by default
   useEffect(() => {
@@ -93,10 +98,31 @@ const Drop = () => {
   const handleAddDrop = useMutation(
     async (values) => {
       setLoading(true);
-      values.locations = values.locations.map((obj) => Object.values(obj));
-      values.center = center;
-      values.radius = radius;
-      return axios.post(backendUrl + `/drops`, values, {
+      const data = { ...values };
+
+      data.locations = data.locations.map((obj) => Object.values(obj));
+      data.center = center;
+      data.radius = radius;
+
+      // Get the current date in China
+      let dateInChina = moment(data.expirationDate).tz("Asia/Shanghai");
+      // Set the hours and minutes to match the input time
+      dateInChina.hours(parseInt(data.expirationTime.split(":")[0]));
+      dateInChina.minutes(data.expirationTime.split(":")[1]);
+
+      data.expirationDate = dateInChina.toISOString();
+
+      if (data.schedule) {
+        // Get the current date in China
+        let dateInChina = moment(data.scheduleDate).tz("Asia/Shanghai");
+        // Set the hours and minutes to match the input time
+        dateInChina.hours(parseInt(data.scheduleTime.split(":")[0]));
+        dateInChina.minutes(data.scheduleTime.split(":")[1]);
+
+        data.scheduleDate = dateInChina.toISOString();
+      }
+
+      return axios.post(backendUrl + `/drops`, data, {
         headers: {
           authorization: `${user.accessToken}`,
         },
@@ -223,14 +249,14 @@ const Drop = () => {
               form={form}
               validateName="dropName"
             />
-            {/* <SelectMenu
-              label={"Select Card"}
+            <SelectMenu
+              label={"Select Card Type"}
               required
               form={form}
               searchable
-              data={pokerCards}
-              validateName="card"
-            /> */}
+              data={dropTypes}
+              validateName="cardType"
+            />
             <InputField
               label={"Number Of Cards"}
               required
