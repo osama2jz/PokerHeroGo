@@ -1,5 +1,6 @@
 import { Flex, Image, Switch, Text, Tooltip } from "@mantine/core";
 import ActionIcons from "../../../components/general/ActionIcons";
+import moment from "moment-timezone";
 
 export const Columns = (setOpen, setEditData) => [
   {
@@ -15,30 +16,35 @@ export const Columns = (setOpen, setEditData) => [
     sortable: true,
   },
   {
-    name: "Drop Coins",
-    selector: (row) => row.dropCoins,
+    name: "Drop Type",
+    width: "140px",
+    selector: (row) => row.cardType,
     grow: 1,
     sortable: true,
   },
   {
     name: "Expiry Date",
     selector: (row) => row.expirationDate,
-    width: "15  0px",
     sortable: true,
     cell: (row) => (
-      <Text>{new Date(row.expirationDate).toLocaleDateString()}</Text>
+      <Text>
+        {moment(row.expirationDate)
+          .tz("Asia/Shanghai")
+          .format("DD-MM-YYYY - hh:mm A")}
+      </Text>
     ),
-  },
-  {
-    name: "Expiry Time",
-    selector: (row) => row.expirationTime,
-    grow: 1,
-    sortable: true,
   },
   {
     name: "Actions",
     center: true,
     width: "100px",
-    cell: (row) => <ActionIcons rowData={row} del={true} type="drops" blocked={row.claimedBy}/>,
+    cell: (row) => (
+      <ActionIcons
+        rowData={row}
+        del={true}
+        type="drops"
+        blocked={row.claimedBy}
+      />
+    ),
   },
 ];
