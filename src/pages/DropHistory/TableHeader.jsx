@@ -88,6 +88,7 @@ export const Columns = [
         dropsCount={row.dropsCount}
         radius={row.radius}
         dropName={row.dropName}
+        cardType={row.cardType}
       />
     ),
   },
@@ -99,6 +100,7 @@ const NavigateToAddDrop = ({
   dropsCount,
   disabled,
   dropName,
+  cardType,
 }) => {
   const navigate = useNavigate();
 
@@ -107,10 +109,11 @@ const NavigateToAddDrop = ({
       onClick={() => {
         navigate("/add-drop", {
           state: {
-            dropsCount: 20,
+            dropsCount: dropsCount || 20,
             center,
             dropName,
             radius,
+            cardType,
           },
         });
       }}

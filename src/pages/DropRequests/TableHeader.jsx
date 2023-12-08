@@ -74,6 +74,7 @@ const NavigateToAddDrop = ({
             center,
             dropName,
             radius,
+            cardType: "Poker Card",
           },
         });
       }}
