@@ -43,7 +43,7 @@ const Drop = () => {
     libraries: ["places", "geometry", "drawing"],
   });
 
-  const dropTypes = ["Coin", "Joker", "Poker Card"];
+  const dropTypes = ["Poker Card", "Joker", "Coin"];
 
   // Use the Geolocation API to get the user's location by default
   useEffect(() => {
