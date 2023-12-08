@@ -29,6 +29,13 @@ export const Columns = [
     width: "140px",
   },
   {
+    name: "Drop Type",
+    selector: (row) => row.cardType,
+    sortable: true,
+    // center: true,
+    width: "140px",
+  },
+  {
     name: "Drops",
     selector: (row) => row.dropsCount,
     sortable: true,
@@ -55,8 +62,7 @@ export const Columns = [
     width: "160px",
     cell: (row) => (
       <Text>
-        {moment(row.expiry).tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm") <
-        moment().tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm")
+        {moment(row.expiry).tz("Asia/Shanghai") < moment().tz("Asia/Shanghai")
           ? "Yes"
           : "No"}
       </Text>
@@ -70,7 +76,9 @@ export const Columns = [
     width: "160px",
     cell: (row) => (
       <Text>
-        {moment(row.createdAt).tz("Asia/Shanghai").format("DD-MM-YYYY")}
+        {moment(row.createdAt)
+          .tz("Asia/Shanghai")
+          .format("DD-MM-YYYY - hh:mm A")}
       </Text>
     ),
   },
@@ -78,19 +86,21 @@ export const Columns = [
     name: "Actions",
     center: true,
     width: "140px",
-    cell: (row) => (
-      <NavigateToAddDrop
-        disabled={
-          moment(row.expiry).tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm") <
-          moment().tz("Asia/Shanghai").format("YYYY-MM-DD - hh:mm")
-        }
-        center={row.center}
-        dropsCount={row.dropsCount}
-        radius={row.radius}
-        dropName={row.dropName}
-        cardType={row.cardType}
-      />
-    ),
+    cell: (row) => {
+      console.log("ALERT", row.cardType);
+      return (
+        <NavigateToAddDrop
+          // disabled={
+          // moment(row.expiry).tz("Asia/Shanghai") > moment().tz("Asia/Shanghai")
+          // }
+          center={row.center}
+          dropsCount={row.dropsCount}
+          radius={row.radius}
+          dropName={row.dropName}
+          cardType={row.cardType}
+        />
+      );
+    },
   },
 ];
 

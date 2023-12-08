@@ -28,6 +28,7 @@ const Drop = () => {
     center: passedCenter,
     radius: passedRadius,
     dropName,
+    cardType,
   } = useLocation().state || {};
 
   const navigate = useNavigate();
@@ -56,6 +57,7 @@ const Drop = () => {
       });
     }
   }, []);
+  console.log(cardType);
   const form = useForm({
     initialValues: {
       locations: [],
@@ -63,6 +65,7 @@ const Drop = () => {
       expirationTime: "",
       scheduleDate: "",
       scheduleTime: "",
+      cardType: cardType || "Poker Card",
       dropName: dropName ? `Re-${dropName}` : "",
       dropCoins: 0,
       // noOfCards:null,
@@ -76,6 +79,7 @@ const Drop = () => {
       expirationDate: (value) => (value ? null : "Select Expiration Date"),
       expirationTime: (value) =>
         value?.length > 0 ? null : "Select Expiration Time",
+      cardType: (value) => (value ? null : "Select Card Type"),
     },
   });
   const onPlaceChanged = () => {
