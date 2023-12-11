@@ -45,7 +45,7 @@ const ActionIcons = ({
           queryClient.invalidateQueries("fetchCompanies");
         else if (type === "Coupons")
           queryClient.invalidateQueries("fetchCoupons");
-        else if (type === "parks") queryClient.invalidateQueries("fetchParks");
+        else if (type === "drops") queryClient.invalidateQueries("fetchDrops");
         else if (type === "tutorial")
           queryClient.invalidateQueries("fetchTutorials");
         else if (type === "advertisement")

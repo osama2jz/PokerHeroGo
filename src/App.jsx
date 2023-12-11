@@ -16,7 +16,6 @@ import Dashboard from "./pages/Dashboard";
 import Coupons from "./pages/Coupons";
 import Signin from "./pages/Siginin";
 import Company from "./pages/Companies";
-// import ViewParks from "./pages/Park/ViewParks";
 import ViewDrops from "./pages/Drop/ViewDrops";
 import Scheduled from "./pages/Scheduled";
 import Requests from "./pages/Requests";

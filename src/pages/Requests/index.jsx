@@ -54,7 +54,7 @@ const Requests = () => {
       />
       <Flex gap="xl" my="md">
         <InputField
-          placeholder={"Search Drop or Park here..."}
+          placeholder={"Search Drop here..."}
           style={{ flex: 1 }}
           leftIcon={"search"}
           value={search}

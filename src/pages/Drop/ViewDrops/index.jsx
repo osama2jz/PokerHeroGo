@@ -19,7 +19,7 @@ const ViewDrops = () => {
   const [data, setData] = useState([]);
 
   const { status } = useQuery(
-    "fetchParks",
+    "fetchDrops",
     () => {
       return axios.get(backendUrl + "/drops", {
         headers: {

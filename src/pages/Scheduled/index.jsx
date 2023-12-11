@@ -34,10 +34,7 @@ const Scheduled = () => {
     }
   );
   const filteredItems = data.filter((item) => {
-    return (
-      item?.dropName?.toLowerCase().includes(search.toLowerCase()) ||
-      item?.park?.name?.toLowerCase().includes(search.toLowerCase())
-    );
+    return item?.dropName?.toLowerCase().includes(search.toLowerCase());
   });
   return (
     <Box>
@@ -47,7 +44,7 @@ const Scheduled = () => {
       />
       <Flex gap="xl" my="md">
         <InputField
-          placeholder={"Search Drop or Park here..."}
+          placeholder={"Search Drop here..."}
           style={{ flex: 1 }}
           leftIcon={"search"}
           onChange={(e) => setSearch(e.target.value)}

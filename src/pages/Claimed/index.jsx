@@ -34,10 +34,7 @@ const Claimed = () => {
     }
   );
   const filteredItems = data.filter((item) => {
-    return (
-      item?.dropName?.toLowerCase().includes(search.toLowerCase()) ||
-      item?.park?.name?.toLowerCase().includes(search.toLowerCase())
-    );
+    return item?.dropName?.toLowerCase().includes(search.toLowerCase());
   });
   return (
     <Box>

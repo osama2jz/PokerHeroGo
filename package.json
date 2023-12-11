@@ -1,5 +1,5 @@
 {
-  "name": "parks-id",
+  "name": "poker-hero-go",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,6 +17,7 @@
     "@react-google-maps/api": "^2.19.2",
     "axios": "^1.5.1",
     "google-map-react": "^2.2.1",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.284.0",
     "moment-timezone": "^0.5.43",
     "papaparse": "^5.4.1",
