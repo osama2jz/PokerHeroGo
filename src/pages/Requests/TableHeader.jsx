@@ -6,6 +6,23 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { backendUrl } from "../../constants";
 
+const HoverAddress = ({ walletAddres }) => {
+  const cleanedWalletAddress =
+    walletAddres === "" || walletAddres === "​" ? "N/A" : walletAddres;
+
+  return (
+    <Group justify="center">
+      <HoverCard width={280} shadow="md">
+        <HoverCard.Target>
+          <Text>{cleanedWalletAddress}</Text>
+        </HoverCard.Target>
+        <HoverCard.Dropdown>
+          <Text>{cleanedWalletAddress}</Text>
+        </HoverCard.Dropdown>
+      </HoverCard>
+    </Group>
+  );
+};
 export const Columns = [
   {
     name: "Sr No.",
@@ -23,8 +40,9 @@ export const Columns = [
   {
     name: "Wallet Address",
     selector: (row) => row.user?.walletAddress,
-    width: "180px",
+    width: "220px",
     sortable: true,
+    cell: (row) => <HoverAddress walletAddres={row.walletAddress?.trim()} />,
   },
   {
     name: "Request Type",

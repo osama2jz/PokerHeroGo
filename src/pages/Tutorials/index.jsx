@@ -72,6 +72,8 @@ const Tutorials = () => {
         value?.length > 0
           ? null
           : "Please enter link greater than 0 characters",
+      coverImage: (value) =>
+        value?.length > 0 ? null : "Please upload cover image",
     },
   });
   const handleAddTutorial = useMutation(
@@ -127,7 +129,12 @@ const Tutorials = () => {
                 size="md"
               />
               <TextInput
-                label="Tutorial Link (iframe)"
+                label="Cover Image"
+                {...form.getInputProps("coverImage")}
+                size="md"
+              />
+              <TextInput
+                label="Tutorial Link"
                 {...form.getInputProps("link")}
                 size="md"
               />

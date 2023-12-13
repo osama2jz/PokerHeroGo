@@ -1,6 +1,23 @@
-import { Switch, Text } from "@mantine/core";
+import { Group, HoverCard, Switch, Text } from "@mantine/core";
 import ActionIcons from "../../components/general/ActionIcons";
 
+const HoverAddress = ({ walletAddres }) => {
+  const cleanedWalletAddress =
+    walletAddres === "" || walletAddres === "​" ? "N/A" : walletAddres;
+
+  return (
+    <Group justify="center">
+      <HoverCard width={280} shadow="md">
+        <HoverCard.Target>
+          <Text>{cleanedWalletAddress}</Text>
+        </HoverCard.Target>
+        <HoverCard.Dropdown>
+          <Text>{cleanedWalletAddress}</Text>
+        </HoverCard.Dropdown>
+      </HoverCard>
+    </Group>
+  );
+};
 export const Columns = (onHandleStatus) => [
   {
     name: "Serial No.",
@@ -34,6 +51,19 @@ export const Columns = (onHandleStatus) => [
     sortable: true,
     center: true,
     width: "140px",
+  },
+  {
+    name: "Wallet Address",
+    selector: (row) => {
+      const walletAddress = row.walletAddress.trim();
+      const cleanedWalletAddress =
+        walletAddress === "" || walletAddress === "​" ? "N/A" : walletAddress;
+      return cleanedWalletAddress;
+    },
+    sortable: true,
+    center: true,
+    width: "220px",
+    cell: (row) => <HoverAddress walletAddres={row.walletAddress?.trim()} />,
   },
   {
     name: "Registration Date",

@@ -50,7 +50,7 @@ const Requests = () => {
     <Box>
       <PageHeader
         title={"Requests"}
-        subTitle={"View all of your Requests drops"}
+        subTitle={"View Reward Requests of your players"}
       />
       <Flex gap="xl" my="md">
         <InputField
