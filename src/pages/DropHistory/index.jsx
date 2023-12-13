@@ -39,7 +39,15 @@ const DropHistory = () => {
             lat: parseFloat(obj.center.lat),
             lng: parseFloat(obj.center.lng),
           };
-          let result = await geocoder.geocode({ location: latlng });
+          let result = null;
+          try {
+            result = await geocoder.geocode({ location: latlng });
+          } catch (err) {
+            console.log(err);
+            result = {
+              formatted_address: "Location not found",
+            };
+          }
           if (result.results[0]) {
             result = result.results[0];
           }

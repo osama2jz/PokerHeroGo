@@ -23,15 +23,6 @@ const DropRequests = () => {
   const { status } = useQuery(
     "fetchDropRequests",
     () => {
-      // load the google maps script if not already loaded
-      const script = document.createElement(`script`);
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${
-        import.meta.env.VITE_GOOGLE_MAP_KEY
-      }&libraries=places`;
-      script.async = true;
-
-      document.head.append(script);
-
       return axios.get(backendUrl + "/drop-request", {
         headers: {
           authorization: `${user.accessToken}`,
@@ -47,7 +38,16 @@ const DropRequests = () => {
             lat: parseFloat(obj.lat),
             lng: parseFloat(obj.lng),
           };
-          let result = await geocoder.geocode({ location: latlng });
+          let result = null;
+          try {
+            result = await geocoder.geocode({ location: latlng });
+          } catch (err) {
+            console.log(err);
+            result = {
+              formatted_address: "Location not found",
+            };
+          }
+
           if (result.results[0]) {
             result = result.results[0];
           }
@@ -63,19 +63,11 @@ const DropRequests = () => {
         await Promise.all(newData).then((res) => {
           newData = res;
         });
-        //cleanup the google maps script
-        const script = document.querySelector(
-          `script[src="https://maps.googleapis.com/maps/api/js?key=${
-            import.meta.env.VITE_GOOGLE_MAP_KEY
-          }"]`
-        );
-        script?.remove();
 
         setData(newData);
       },
       enabled: isLoaded,
-    }, 
-  
+    }
   );
   const filteredItems = data.filter((item) => {
     if (!search) return true;
