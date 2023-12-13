@@ -21,6 +21,10 @@ import { useNavigate } from "react-router-dom";
 import DataGrid from "../../components/general/Table";
 import InputField from "../../components/general/InputField";
 import { Columns } from "./TableHeader";
+import ImageUpload from "../../components/general/ImageUpload";
+import uuid from "react-uuid";
+import { storage } from "../../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const Tutorials = () => {
   const queryClient = new useQueryClient();
@@ -72,24 +76,53 @@ const Tutorials = () => {
         value?.length > 0
           ? null
           : "Please enter link greater than 0 characters",
-      coverImage: (value) =>
-        value?.length > 0 ? null : "Please upload cover image",
+      coverImage: (value) => (value ? null : "Please upload cover image"),
     },
   });
   const handleAddTutorial = useMutation(
     async (values) => {
-      return axios.post(backendUrl + `/tutorial`, values, {
-        headers: {
-          authorization: `${user.accessToken}`,
+      let coverImage = values.coverImage;
+      console.log(coverImage);
+      // upload image to firebase
+      const storageRef = ref(storage, `tutorials/${uuid()}`);
+      const uploadTask = uploadBytesResumable(storageRef, coverImage);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          toast.loading(`Uploading Cover Image to Firebase`);
+          switch (snapshot.state) {
+            case "paused":
+              toast.error("Upload is paused");
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
         },
-      });
+        (error) => {
+          toast.error(error.message);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+            values.coverImage = downloadURL;
+            console.log(values);
+            let response = await axios.post(backendUrl + `/tutorial`, values, {
+              headers: {
+                authorization: `${user.accessToken}`,
+              },
+            });
+            console.log(response);
+            toast.success(response.data.message);
+            queryClient.invalidateQueries("fetchTutorials");
+            form.reset();
+          });
+        }
+      );
     },
     {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries("fetchTutorials");
-        toast.success(res.data.message);
-        form.reset();
-      },
+      onSuccess: (res) => {},
       onError: (err) => {
         toast.error(err.response.data.message);
       },
@@ -129,11 +162,6 @@ const Tutorials = () => {
                 size="md"
               />
               <TextInput
-                label="Cover Image"
-                {...form.getInputProps("coverImage")}
-                size="md"
-              />
-              <TextInput
                 label="Tutorial Link"
                 {...form.getInputProps("link")}
                 size="md"
@@ -143,6 +171,8 @@ const Tutorials = () => {
                 {...form.getInputProps("description")}
                 size="md"
               />
+
+              <ImageUpload form={form} name="coverImage" />
               <Group justify="flex-end" mt="lg">
                 <Button
                   label={"Cancel"}

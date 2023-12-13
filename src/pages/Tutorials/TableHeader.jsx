@@ -16,7 +16,7 @@ export const Columns = [
     name: "Tutorial Cover Image",
     selector: (row) => row.coverImage,
     cell: (row) => (
-      <a href={row.linkURL} target="_blank">
+      <a href={row.coverImage} target="_blank">
         {row.coverImage}
       </a>
     ),

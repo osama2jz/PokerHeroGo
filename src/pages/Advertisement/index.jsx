@@ -21,6 +21,10 @@ import { useNavigate } from "react-router-dom";
 import DataGrid from "../../components/general/Table";
 import InputField from "../../components/general/InputField";
 import { Columns } from "./TableHeader";
+import ImageUpload from "../../components/general/ImageUpload";
+import uuid from "react-uuid";
+import { storage } from "../../firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 const Advertisements = () => {
   const queryClient = new useQueryClient();
@@ -54,7 +58,6 @@ const Advertisements = () => {
       title: "",
       link: "",
       description: "",
-      coverImage: "",
     },
 
     validate: {
@@ -62,10 +65,7 @@ const Advertisements = () => {
         value?.length > 2
           ? null
           : "Please enter title greater than 2 characters",
-      coverImage: (value) =>
-        value?.length > 0
-          ? null
-          : "Please enter coverimage link greater than 0 characters",
+      coverImage: (value) => (value ? null : "Please Upload Cover Image"),
       link: (value) =>
         value?.length > 0
           ? null
@@ -74,18 +74,48 @@ const Advertisements = () => {
   });
   const handleAddAdvertisement = useMutation(
     async (values) => {
-      return axios.post(backendUrl + `/advertisement`, values, {
-        headers: {
-          authorization: `${user.accessToken}`,
+      let coverImage = values.coverImage;
+      console.log(coverImage);
+      // upload image to firebase
+      const storageRef = ref(storage, `advertisement/${uuid()}`);
+      const uploadTask = uploadBytesResumable(storageRef, coverImage);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          toast.loading(`Uploading Cover Image to Firebase`);
+          switch (snapshot.state) {
+            case "paused":
+              toast.error("Upload is paused");
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+          }
         },
-      });
+        (error) => {
+          toast.error(error.message);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+            values.coverImage = downloadURL;
+            console.log(values);
+            let response = await axios.post(backendUrl + `/advertisement`, values, {
+              headers: {
+                authorization: `${user.accessToken}`,
+              },
+            });
+            console.log(response);
+            toast.success(response.data.message);
+            queryClient.invalidateQueries("fetchAdvertisements");
+            form.reset();
+          });
+        }
+      );
     },
     {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries("fetchAdvertisements");
-        toast.success(res.data.message);
-        form.reset();
-      },
+      onSuccess: (res) => {},
       onError: (err) => {
         toast.error(err.response.data.message);
       },
@@ -124,11 +154,11 @@ const Advertisements = () => {
                 {...form.getInputProps("title")}
                 size="md"
               />
-              <TextInput
+              {/* <TextInput
                 label="Advertisement Cover Image URL"
                 {...form.getInputProps("coverImage")}
                 size="md"
-              />
+              /> */}
               <TextInput
                 label="Advertisement Link"
                 {...form.getInputProps("link")}
@@ -139,6 +169,7 @@ const Advertisements = () => {
                 {...form.getInputProps("description")}
                 size="md"
               />
+              <ImageUpload form={form} name="coverImage" />
               <Group justify="flex-end" mt="lg">
                 <Button
                   label={"Cancel"}
