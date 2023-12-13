@@ -27,6 +27,7 @@ const Drop = () => {
     dropsCount,
     center: passedCenter,
     radius: passedRadius,
+    centerLocation,
     dropName,
     cardType,
   } = useLocation().state || {};
@@ -38,6 +39,9 @@ const Drop = () => {
   const [markers, setMarkers] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [formatted_address, setFormatted_address] = useState(
+    centerLocation || ""
+  );
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
@@ -57,7 +61,7 @@ const Drop = () => {
       });
     }
   }, []);
-  console.log(cardType);
+
   const form = useForm({
     initialValues: {
       locations: [],
@@ -85,10 +89,11 @@ const Drop = () => {
   const onPlaceChanged = () => {
     if (selectedPlace != null) {
       const place = selectedPlace.getPlace();
-      // const name = place.name;
+      const formatted_address = place.formatted_address;
+      setFormatted_address(formatted_address);
       setCenter({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
+        lat: place.geometry?.location.lat(),
+        lng: place.geometry?.location.lng(),
       });
     } else {
       console.log("Autocomplete is not loaded yet!");
@@ -191,7 +196,11 @@ const Drop = () => {
                 onLoad={onLoad}
                 onPlaceChanged={onPlaceChanged}
               >
-                <InputField placeholder="Search for a location" />
+                <InputField
+                  value={formatted_address}
+                  onChange={(val) => setFormatted_address(val.target.value)}
+                  placeholder="Search for a location"
+                />
               </Autocomplete>
               <Box style={{ minHeight: "500px" }}>
                 <GoogleMap

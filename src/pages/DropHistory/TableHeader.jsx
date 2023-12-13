@@ -98,6 +98,7 @@ export const Columns = [
           radius={row.radius}
           dropName={row.dropName}
           cardType={row.cardType}
+          centerLocation={row.centerLocation}
         />
       );
     },
@@ -111,6 +112,7 @@ const NavigateToAddDrop = ({
   disabled,
   dropName,
   cardType,
+  centerLocation,
 }) => {
   const navigate = useNavigate();
 
@@ -124,6 +126,7 @@ const NavigateToAddDrop = ({
             dropName,
             radius,
             cardType,
+            centerLocation,
           },
         });
       }}
