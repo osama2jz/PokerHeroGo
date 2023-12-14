@@ -82,7 +82,6 @@ const Tutorials = () => {
   const handleAddTutorial = useMutation(
     async (values) => {
       let coverImage = values.coverImage;
-      console.log(coverImage);
       // upload image to firebase
       const storageRef = ref(storage, `tutorials/${uuid()}`);
       const uploadTask = uploadBytesResumable(storageRef, coverImage);
@@ -107,13 +106,11 @@ const Tutorials = () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
             values.coverImage = downloadURL;
-            console.log(values);
             let response = await axios.post(backendUrl + `/tutorial`, values, {
               headers: {
                 authorization: `${user.accessToken}`,
               },
             });
-            console.log(response);
             toast.success(response.data.message);
             queryClient.invalidateQueries("fetchTutorials");
             form.reset();

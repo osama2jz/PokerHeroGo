@@ -1,3 +1,4 @@
+import { Avatar, HoverCard, Text } from "@mantine/core";
 import ActionIcons from "../../components/general/ActionIcons";
 
 export const Columns = [
@@ -13,12 +14,28 @@ export const Columns = [
     sortable: true,
   },
   {
-    name: "Tutorial Cover Image",
+    name: "Cover Image",
+    width: "150px",
     selector: (row) => row.coverImage,
     cell: (row) => (
-      <a href={row.coverImage} target="_blank">
-        {row.coverImage}
-      </a>
+      <HoverCard>
+        <HoverCard.Target>
+          <Avatar
+            p={10}
+            src={row.coverImage}
+            alt={row.title}
+              size={80}
+         />
+        </HoverCard.Target>
+        <HoverCard.Dropdown>
+          <img
+            src={row.coverImage}
+            alt={row.title}
+            width="300px"
+            height="149.61px"
+          />
+        </HoverCard.Dropdown>
+      </HoverCard>
     ),
   },
   {

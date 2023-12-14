@@ -87,7 +87,6 @@ export const Columns = [
     center: true,
     width: "140px",
     cell: (row) => {
-      console.log("ALERT", row.cardType);
       return (
         <NavigateToAddDrop
           // disabled={
