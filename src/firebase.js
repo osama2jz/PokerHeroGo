@@ -6,15 +6,14 @@ import {getStorage} from "firebase/storage";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyD0yuO8iU65VJjybzsKT1e0Xt-rsNs3khU",
-  authDomain: "smartchoice-stay.firebaseapp.com",
-  projectId: "smartchoice-stay",
-  storageBucket: "smartchoice-stay.appspot.com",
-  messagingSenderId: "406186752810",
-  appId: "1:406186752810:web:808ea387c0450162bd3c53",
-  measurementId: "G-RX7DDBX58J"
+  apiKey: "AIzaSyBSwzuJHRDjMDE__y1rWWt0csfkIMPR4Ds",
+  authDomain: "poker-hero-go.firebaseapp.com",
+  projectId: "poker-hero-go",
+  storageBucket: "poker-hero-go.appspot.com",
+  messagingSenderId: "953462740748",
+  appId: "1:953462740748:web:5bce5c433e8959d78cdb29",
+  measurementId: "G-EZP1HWEDHE"
 };
 
 // Initialize Firebase
