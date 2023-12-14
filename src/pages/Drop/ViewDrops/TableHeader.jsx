@@ -1,4 +1,4 @@
-import { Flex, Image, Switch, Text, Tooltip } from "@mantine/core";
+import { Flex, Image, Stack, Switch, Text, Tooltip } from "@mantine/core";
 import ActionIcons from "../../../components/general/ActionIcons";
 import moment from "moment-timezone";
 
@@ -21,6 +21,29 @@ export const Columns = (setOpen, setEditData) => [
     selector: (row) => row.cardType,
     grow: 1,
     sortable: true,
+  },
+  {
+    name: "Drop Coordinates",
+    selector: (row) => row.location.coordinates.join("-"),
+    sortable: true,
+    cell: (row) => (
+      <a
+        href={`https://www.google.com/maps/search/?api=1&query=${row.location.coordinates.join(
+          ","
+        )}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Stack gap={0} p={6}>
+          <Text p={0} m={0}>
+            Lat: {row.location.coordinates[0]}
+          </Text>
+          <Text p={0} m={0}>
+            Lng: {row.location.coordinates[1]}
+          </Text>
+        </Stack>
+      </a>
+    ),
   },
   {
     name: "Expiry Date",
