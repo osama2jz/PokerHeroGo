@@ -90,6 +90,10 @@ export default function ImageUpload({ form, name = "coverImage" }) {
                 Drag and drop a file
                 <br />
                 or click to select a file
+                <br />
+                <Text c="gray" size="xs">
+                  (Preferred Dimensions : 770x384)
+                </Text>
               </Text>
             )}
           </>
