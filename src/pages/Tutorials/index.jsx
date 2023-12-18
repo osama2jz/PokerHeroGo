@@ -88,13 +88,13 @@ const Tutorials = () => {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          toast.loading(`Uploading Cover Image to Firebase`);
           switch (snapshot.state) {
             case "paused":
               toast.error("Upload is paused");
               console.log("Upload is paused");
               break;
             case "running":
+              toast.loading(`Uploading Cover Image to Firebase`);
               console.log("Upload is running");
               break;
           }
@@ -106,14 +106,32 @@ const Tutorials = () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
             values.coverImage = downloadURL;
-            let response = await axios.post(backendUrl + `/tutorial`, values, {
-              headers: {
-                authorization: `${user.accessToken}`,
-              },
-            });
-            toast.success(response.data.message);
-            queryClient.invalidateQueries("fetchTutorials");
-            form.reset();
+            try {
+              let response = await axios.post(
+                backendUrl + `/tutorial`,
+                values,
+                {
+                  headers: {
+                    authorization: `${user.accessToken}`,
+                  },
+                }
+              );
+              toast.success(response.data.message);
+              queryClient.invalidateQueries("fetchTutorials");
+              form.reset();
+            } catch (err) {
+              // delete image from firebase
+              const imageRef = ref(storage, `${downloadURL}`);
+              await deleteObject(imageRef)
+                .then(() => {
+                  console.log("Image deleted from firebase");
+                })
+                .catch(() => {
+                  console.log("Error deleting image from firebase");
+                });
+              toast.dismiss();
+              toast.error(err.response.data.message);
+            }
           });
         }
       );

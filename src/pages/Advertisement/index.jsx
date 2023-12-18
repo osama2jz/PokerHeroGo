@@ -24,7 +24,12 @@ import { Columns } from "./TableHeader";
 import ImageUpload from "../../components/general/ImageUpload";
 import uuid from "react-uuid";
 import { storage } from "../../firebase";
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {
+  ref,
+  getDownloadURL,
+  uploadBytesResumable,
+  deleteObject,
+} from "firebase/storage";
 
 const Advertisements = () => {
   const queryClient = new useQueryClient();
@@ -82,13 +87,13 @@ const Advertisements = () => {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          toast.loading(`Uploading Cover Image to Firebase`);
           switch (snapshot.state) {
             case "paused":
               toast.error("Upload is paused");
               console.log("Upload is paused");
               break;
             case "running":
+              toast.loading(`Uploading Cover Image to Firebase`);
               console.log("Upload is running");
               break;
           }
@@ -100,16 +105,33 @@ const Advertisements = () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
             values.coverImage = downloadURL;
-            console.log(values);
-            let response = await axios.post(backendUrl + `/advertisement`, values, {
-              headers: {
-                authorization: `${user.accessToken}`,
-              },
-            });
-            console.log(response);
-            toast.success(response.data.message);
-            queryClient.invalidateQueries("fetchAdvertisements");
-            form.reset();
+            try {
+              let response = await axios.post(
+                backendUrl + `/advertisement`,
+                values,
+                {
+                  headers: {
+                    authorization: `${user.accessToken}`,
+                  },
+                }
+              );
+              console.log(response);
+              toast.success(response.data.message);
+              queryClient.invalidateQueries("fetchAdvertisements");
+              form.reset();
+            } catch (err) {
+              // delete image from firebase
+              const imageRef = ref(storage, `${downloadURL}`);
+              await deleteObject(imageRef)
+                .then(() => {
+                  console.log("Image deleted from firebase");
+                })
+                .catch(() => {
+                  console.log("Error deleting image from firebase");
+                });
+              toast.dismiss();
+              toast.error(err.response.data.message);
+            }
           });
         }
       );
