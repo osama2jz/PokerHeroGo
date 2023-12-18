@@ -79,7 +79,7 @@ const Drop = () => {
 
     validate: {
       dropName: (value) => (value?.length > 0 ? null : "Enter Drop Name"),
-      noOfOffers: (value) => (value ? null : "Select Number of Cards"),
+      noOfOffers: (value) => (value ? null : "Select Quantity"),
       expirationDate: (value) => (value ? null : "Select Expiration Date"),
       expirationTime: (value) =>
         value?.length > 0 ? null : "Select Expiration Time",
@@ -271,7 +271,7 @@ const Drop = () => {
               validateName="cardType"
             />
             <InputField
-              label={"Number Of Cards"}
+              label={"Quantity"}
               required
               form={form}
               validateName="noOfOffers"
