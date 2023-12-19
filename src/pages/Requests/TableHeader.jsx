@@ -1,4 +1,4 @@
-import { Badge, Menu, Text } from "@mantine/core";
+import { Badge, Group, HoverCard, Menu, Text } from "@mantine/core";
 import { useContext } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { UserContext } from "../../context";
@@ -42,7 +42,7 @@ export const Columns = [
     selector: (row) => row.user?.walletAddress,
     width: "220px",
     sortable: true,
-    cell: (row) => <HoverAddress walletAddres={row.walletAddress?.trim()} />,
+    cell: (row) => <HoverAddress walletAddres={row.user?.walletAddress?.trim()} />,
   },
   {
     name: "Request Type",
