@@ -60,7 +60,7 @@ const Requests = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <SelectMenu
+      <SelectMenu
           data={["All", "NFT", "Crypto", { label: "Pokerhand", value: "Coin" }]}
           placeholder="Filter"
           value={filter}
