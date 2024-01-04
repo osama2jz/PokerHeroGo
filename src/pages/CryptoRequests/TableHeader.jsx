@@ -1,4 +1,4 @@
-import { Badge, Group, HoverCard, Menu, Text } from "@mantine/core";
+import { Badge, Group, HoverCard, Menu, Stack, Text } from "@mantine/core";
 import { useContext } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { UserContext } from "../../context";
@@ -34,51 +34,40 @@ export const Columns = [
     name: "Request By",
     selector: (row) => row.user?.fullName,
     sortable: true,
-    // center: true,
-    width: "200px",
+    cell: (row) => (
+      <Stack gap={0} py="xs">
+        <Text p={0} m={0}>
+          {row.user?.fullName}
+        </Text>
+        <a size="xs" href={`mailto:${row.user?.email}`}>
+          {row.user?.email}
+        </a>
+      </Stack>
+    ),
+
+    width: "250px",
   },
   {
     name: "Wallet Address",
     selector: (row) => row.user?.walletAddress,
     width: "220px",
     sortable: true,
-    cell: (row) => <HoverAddress walletAddres={row.user?.walletAddress?.trim()} />,
+    cell: (row) => (
+      <HoverAddress walletAddres={row.user?.walletAddress?.trim()} />
+    ),
   },
   {
-    name: "Request Type",
-    selector: (row) => row.conversionType,
-    width: "200px",
-    sortable: true,
-  },
-  {
-    name: "Hand Name",
-    selector: (row) => row?.handName,
-    sortable: true,
-    // center: true,
-    width: "150px",
-  },
-  {
-    name: "Coins",
+    name: "Coins Used In Request",
     selector: (row) => Math.abs(row?.coins),
-    sortable: true,
-    // center: true,
-    width: "100px",
+    width: "200px",
   },
   {
     name: "Request Date",
     selector: (row) => row.createdAt,
     sortable: true,
     center: true,
-    width: "200px",
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleDateString()}</Text>,
-  },
-  {
-    name: "Request Time",
-    selector: (row) => row.createdAt,
-    sortable: true,
-    center: true,
-    width: "200px",
-    cell: (row) => <Text>{new Date(row.createdAt).toLocaleTimeString()}</Text>,
+    width: "220px",
+    cell: (row) => <Text>{new Date(row.createdAt).toLocaleString()}</Text>,
   },
   {
     name: "Status",

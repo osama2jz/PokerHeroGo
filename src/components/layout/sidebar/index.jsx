@@ -4,11 +4,12 @@ import {
   CheckCircle2Icon,
   DropletIcon,
   FileWarning,
-  GaugeCircleIcon, GitPullRequestDraftIcon,
+  GaugeCircleIcon,
+  GitPullRequestDraftIcon,
   HelpCircle,
   Settings,
   StarIcon,
-  User2Icon
+  User2Icon,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -62,10 +63,22 @@ export default function Sidebar({ toggle }) {
             icon: <CheckCircle2Icon size={18} />,
             to: "/claimed",
           },
+        ],
+      },
+      {
+        label: "Reward Requests",
+        icon: <User2Icon size={18} />,
+        isLink: false,
+        children: [
           {
-            label: "Requests",
+            label: "Crypto Requests",
             icon: <HelpCircle size={18} />,
-            to: "/requests",
+            to: "/crypto-requests",
+          },
+          {
+            label: "NFT Joker Requests",
+            icon: <HelpCircle size={18} />,
+            to: "/nft-requests",
           },
         ],
       },

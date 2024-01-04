@@ -4,26 +4,27 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
 import { MantineProvider } from "@mantine/core";
-import CustomAppShell from "./components/layout/app-shell";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Drop from "./pages/Drop";
-import Live from "./pages/Live";
+import CustomAppShell from "./components/layout/app-shell";
+import Advertisements from "./pages/Advertisement";
 import Claimed from "./pages/Claimed";
-import Users from "./pages/Users";
-import OfferTypes from "./pages/Offers";
-import Settings from "./pages/Settings";
-import Dashboard from "./pages/Dashboard";
-import Coupons from "./pages/Coupons";
-import Signin from "./pages/Siginin";
 import Company from "./pages/Companies";
+import Coupons from "./pages/Coupons";
+import CryptoRequests from "./pages/CryptoRequests";
+import Dashboard from "./pages/Dashboard";
+import Drop from "./pages/Drop";
 import ViewDrops from "./pages/Drop/ViewDrops";
-import Scheduled from "./pages/Scheduled";
-import Requests from "./pages/Requests";
 import DropHistory from "./pages/DropHistory";
 import DropRequests from "./pages/DropRequests";
-import Tutorials from "./pages/Tutorials";
-import Advertisements from "./pages/Advertisement";
+import Live from "./pages/Live";
+import NFTRequests from "./pages/NFTRequests";
+import OfferTypes from "./pages/Offers";
+import Scheduled from "./pages/Scheduled";
+import Settings from "./pages/Settings";
+import Signin from "./pages/Siginin";
 import SocialMediaLinks from "./pages/SocialMediaLinks";
+import Tutorials from "./pages/Tutorials";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -40,14 +41,18 @@ function App() {
             <Route path="/drop-history" element={<DropHistory />} />
             <Route path="/drop-requests" element={<DropRequests />} />
             <Route path="/claimed" element={<Claimed />} />
-            <Route path="/requests" element={<Requests />} />
+            <Route
+              path="/crypto-requests"
+              element={<CryptoRequests key="crypto" />}
+            />
+            <Route path="/nft-requests" element={<NFTRequests key="nft" />} />
             <Route path="/users" element={<Users />} />
             <Route path="/companies" element={<Company />} />
             <Route path="/offers" element={<OfferTypes />} />
             <Route path="/coupons" element={<Coupons />} />
             <Route path="/tutorials" element={<Tutorials />} />
-            <Route path="/advertisements" element={<Advertisements />} /> 
-            <Route path="/social-media-links" element={<SocialMediaLinks />} /> 
+            <Route path="/advertisements" element={<Advertisements />} />
+            <Route path="/social-media-links" element={<SocialMediaLinks />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to={"/"} />} />
           </Route>

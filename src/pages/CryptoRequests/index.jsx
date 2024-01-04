@@ -12,7 +12,7 @@ import axios from "axios";
 import { UserContext } from "../../context";
 import toast from "react-hot-toast";
 
-const Requests = () => {
+const CryptoRequests = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("All");
@@ -20,7 +20,7 @@ const Requests = () => {
   const { status } = useQuery(
     "fetchRequests",
     () => {
-      return axios.get(backendUrl + "/request", {
+      return axios.get(backendUrl + "/request?conversionType=Crypto", {
         headers: {
           authorization: `${user.accessToken}`,
         },
@@ -49,8 +49,8 @@ const Requests = () => {
   return (
     <Box>
       <PageHeader
-        title={"Requests"}
-        subTitle={"View Reward Requests of your players"}
+        title={"Crypto Requests"}
+        subTitle={"View Crypto Reward Requests of your players"}
       />
       <Flex gap="xl" my="md">
         <InputField
@@ -59,12 +59,6 @@ const Requests = () => {
           leftIcon={"search"}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-        />
-      <SelectMenu
-          data={["All", "NFT", "Crypto", { label: "Pokerhand", value: "Coin" }]}
-          placeholder="Filter"
-          value={filter}
-          onChange={setFilter}
         />
         <Button
           primary={false}
@@ -84,4 +78,4 @@ const Requests = () => {
   );
 };
 
-export default Requests;
+export default CryptoRequests;
