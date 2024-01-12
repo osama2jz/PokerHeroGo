@@ -39,20 +39,6 @@ export const Columns = (onHandleStatus) => [
     width: "230px",
   },
   {
-    name: "Phone No.",
-    selector: (row) => row.phone,
-    sortable: true,
-    // center: true,
-    width: "160px",
-  },
-  {
-    name: "Total Coins",
-    selector: (row) => row.coinsEarnedOverLifetime,
-    sortable: true,
-    center: true,
-    width: "140px",
-  },
-  {
     name: "Wallet Address",
     selector: (row) => {
       const walletAddress = row.walletAddress.trim();
@@ -64,6 +50,41 @@ export const Columns = (onHandleStatus) => [
     center: true,
     width: "220px",
     cell: (row) => <HoverAddress walletAddres={row.walletAddress?.trim()} />,
+  },
+  {
+    name: "Phone No.",
+    selector: (row) => row.phone,
+    sortable: true,
+    // center: true,
+    width: "160px",
+  },
+  {
+    name: "Crypto Earned",
+    selector: (row) => row.cryptoEarnedOverLifetime ||"--",
+    sortable: true,
+    center: true,
+    width: "160px",
+  },
+  {
+    name: "NFTs Earned",
+    selector: (row) => row.proJokerNFTClaimed+row.p2eJokerNFTClaimed || "--",
+    sortable: true,
+    center: true,
+    width: "140px",
+  },
+  {
+    name: "Poker Cards",
+    selector: (row) => row.cardsEarned?.length || "--",
+    sortable: true,
+    center: true,
+    width: "140px",
+  },
+  {
+    name: "Game Coins Earned",
+    selector: (row) => row.coinsEarnedOverLifetime,
+    sortable: true,
+    center: true,
+    width: "180px",
   },
   {
     name: "Registration Date",
