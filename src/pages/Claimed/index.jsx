@@ -27,6 +27,7 @@ const Claimed = () => {
       onSuccess: (res) => {
         const data = res.data.data;
         let newData = data.map((obj, ind) => {
+          if(obj.dropCoins === 0) obj.dropCoins = "Limit Reached";
           return { ...obj, serialNo: ind + 1 };
         });
         setData(newData);
