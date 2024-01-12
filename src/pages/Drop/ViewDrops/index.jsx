@@ -1,4 +1,4 @@
-import { Box, Flex } from "@mantine/core";
+import { Box, Flex, Select } from "@mantine/core";
 import PageHeader from "../../../components/general/PageHeader";
 import DataGrid from "../../../components/general/Table";
 import { Columns } from "./TableHeader";
@@ -37,12 +37,17 @@ const ViewDrops = () => {
       },
     }
   );
+  const [dropType, setDropType] = useState("");
   const filteredItems = data.filter((item) => {
-    return item?.dropName?.toLowerCase().includes(search.toLowerCase());
+    let droptype = !dropType ? true : item?.cardType === dropType;
+    return (
+      item?.dropName?.toLowerCase().includes(search.toLowerCase()) && droptype
+    );
   });
   return (
     <Box>
       <PageHeader title={"Drops"} subTitle={"View all drops in your system"} />
+
       <Flex gap="xl" my="md" wrap={"wrap"}>
         <InputField
           placeholder={"Search here..."}
@@ -50,7 +55,22 @@ const ViewDrops = () => {
           leftIcon={"search"}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button primary={false} label={"Clear"} />
+        <Select
+          label={"Select Drop Type"}
+          data={[{ label: "Coins, Jokers, Poker Cards", value: "" }, "Coin", "Joker", "Poker Card"]}
+          onChange={(e) => setDropType(e)}
+          value={dropType}
+          placeholder={"Coin, Joker, Poker Card"}
+          m={-20}
+        />
+        <Button
+          primary={false}
+          label={"Clear"}
+          onClick={() => {
+            setSearch("");
+            setDropType("");
+          }}
+        />
         <Button label={"Add Drops"} onClick={() => navigate("/add-drop")} />
       </Flex>
       <DataGrid

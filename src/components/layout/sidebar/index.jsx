@@ -76,7 +76,7 @@ export default function Sidebar({ toggle }) {
             to: "/crypto-requests",
           },
           {
-            label: "NFT Joker Requests",
+            label: "NFT Requests",
             icon: <HelpCircle size={18} />,
             to: "/nft-requests",
           },
