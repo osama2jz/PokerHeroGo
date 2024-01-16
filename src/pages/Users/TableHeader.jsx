@@ -7,7 +7,7 @@ const HoverAddress = ({ walletAddres }) => {
 
   return (
     <Group justify="center">
-      <HoverCard width={400} shadow="md">
+      <HoverCard shadow="md">
         <HoverCard.Target>
           <Text>{cleanedWalletAddress}</Text>
         </HoverCard.Target>
