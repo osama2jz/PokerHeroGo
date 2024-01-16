@@ -26,20 +26,20 @@ import {
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
-  const [countries, setCountries] = useState({
-    options: {},
-    series: [44, 55, 41, 17, 15],
-    chartOptions: {
-      labels: ["USA", "UK", "Germany", "France", "Others"],
-    },
-  });
-  const [drops, setDrops] = useState({
-    options: {},
-    series: [44, 55],
-    chartOptions: {
-      labels: ["Live", "Claimed"],
-    },
-  });
+  // const [countries, setCountries] = useState({
+  //   options: {},
+  //   series: [44, 55, 41, 17, 15],
+  //   chartOptions: {
+  //     labels: ["USA", "UK", "Germany", "France", "Others"],
+  //   },
+  // });
+  // const [drops, setDrops] = useState({
+  //   options: {},
+  //   series: [44, 55],
+  //   chartOptions: {
+  //     labels: ["Live", "Claimed"],
+  //   },
+  // });
   const { status, data } = useQuery(
     "fetchStats",
     () => {
@@ -53,12 +53,12 @@ const Dashboard = () => {
       onSuccess: (res) => {},
     }
   );
-  if (false)
-    return (
-      <Center>
-        <Loader />
-      </Center>
-    );
+  // if (false)
+  //   return (
+  //     <Center>
+  //       <Loader />
+  //     </Center>
+  //   );
   return (
     <Box>
       <PageHeader
@@ -82,7 +82,7 @@ const Dashboard = () => {
           icon={<CheckCircle2Icon />}
         />
       </Group>
-      <SimpleGrid cols={{ base: 1, md: 2 }} my="xl">
+      {/* <SimpleGrid cols={{ base: 1, md: 2 }} my="xl">
         <Stack>
           <Chart
             options={countries.chartOptions}
@@ -105,7 +105,7 @@ const Dashboard = () => {
             All Drops
           </Title>
         </Stack>
-      </SimpleGrid>
+      </SimpleGrid> */}
     </Box>
   );
 };
