@@ -72,12 +72,12 @@ const Dashboard = () => {
           icon={<User2Icon />}
         />
         <Card
-          title="Total Drops"
+          title="Total Active Drops"
           value={data?.data?.data?.totalDrops}
           icon={<DropletIcon />}
         />
         <Card
-          title="Claimed Drops"
+          title="Total Claimed Drops"
           value={data?.data?.data?.claimedDrops}
           icon={<CheckCircle2Icon />}
         />
